@@ -18,13 +18,13 @@ repositories {
 
 ext {
 	//< ???
-//	set('lombokVersion', '1.18.22')
 //	set('assertJVersion', '3.21.0')
 //	set('junitVersion', '5.10.0')
 //	set('mockitoVersion', '4.0.0')
 //	set('jacksonVersion', '2.13.1')
 //	set('javaTuplesVersion', '1.2')
 //	set('logbackVersion', '1.2.10')
+	set('lombokVersion', '1.18.22')
 
 	set('javaFakersVersion', '0.2')
 	set('javaResultsVersion', '0.7.1')
@@ -32,11 +32,19 @@ ext {
 
 dependencies {
 	// impl section
+	implementation "org.projectlombok:lombok:$lombokVersion"
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	// anno section
+	annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
 	// test-impl section
+	testImplementation "org.projectlombok:lombok:$lombokVersion"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// test-anno section
+	testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
 	// local impl section
 	implementation "ru.multa.entia:java-results:$javaResultsVersion"
