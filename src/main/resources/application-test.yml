@@ -1,0 +1,9 @@
+server.port: 70001
+
+mongo:
+  type: LOCAL
+  local:
+    scheme: mongodb
+    host: localhost
+    port: 27017
+    databaseName: test

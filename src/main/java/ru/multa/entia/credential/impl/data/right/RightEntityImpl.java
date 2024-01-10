@@ -12,7 +12,7 @@ import ru.multa.entia.credential.api.data.right.RightEntity;
 public class RightEntityImpl implements RightEntity {
     @Id
     private ObjectId id;
-    @Indexed
+    @Indexed(unique = true)
     private String value;
 
     public RightEntityImpl() {
