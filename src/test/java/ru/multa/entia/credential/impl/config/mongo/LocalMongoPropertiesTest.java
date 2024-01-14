@@ -1,6 +1,8 @@
 package ru.multa.entia.credential.impl.config.mongo;
 
+import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
+import com.mongodb.connection.ClusterSettings;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -181,7 +183,7 @@ class LocalMongoPropertiesTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(LocalMongoProperties.Code.PORT_NOT_SET))
+                        .code(CR.get(LocalMongoProperties.Code.INVALID_PORT))
                         .args(initPort == null ? "null" : initPort)
                         .back()
                         .compare()
@@ -216,7 +218,60 @@ class LocalMongoPropertiesTest {
     }
 
     @Test
-    void shouldCheckSettingsGetting() {
+    void shouldCheckSettingsGetting_ifBadConnectionString() {
+        LocalMongoProperties properties = new LocalMongoProperties();
+        properties.setScheme(Faker.str_().random());
+        properties.setHost(Faker.str_().random());
+        properties.setPort(String.valueOf(Faker.int_().between(0, 0xFFFF)));
+        properties.setDatabaseName(Faker.str_().random());
 
+        Result<MongoClientSettings> result = properties.getSettings();
+
+        assertThat(
+                Results.comparator(result)
+                        .isFail()
+                        .value(null)
+                        .seedsComparator()
+                        .code(CR.get(LocalMongoProperties.Code.INVALID_CONNECTION_STRING))
+                        .back()
+                        .compare()
+        ).isTrue();
+    }
+
+    @Test
+    void shouldCheckSettingsGetting() {
+        String scheme = "mongodb";
+        String host = "localhost";
+        String port = "27017";
+        String databaseName = "test";
+        String expected = String.format("%s://%s:%s/%s", scheme, host, port, databaseName);
+
+        LocalMongoProperties properties = new LocalMongoProperties();
+        properties.setScheme(scheme);
+        properties.setHost(host);
+        properties.setPort(port);
+        properties.setDatabaseName(databaseName);
+
+        Result<MongoClientSettings> result = properties.getSettings();
+
+        ConnectionString cs = new ConnectionString(expected);
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .applyConnectionString(cs)
+                .build();
+
+        assertThat(
+                Results.comparator(result)
+                        .isSuccess()
+                        .seedsComparator()
+                        .isNull()
+                        .back()
+                        .compare()
+        ).isTrue();
+
+        ClusterSettings clusterSettings = result.value().getClusterSettings();
+        assertThat(clusterSettings.getSrvServiceName()).isEqualTo(scheme);
+        assertThat(clusterSettings.getHosts()).hasSize(1);
+        assertThat(clusterSettings.getHosts().get(0).getHost()).isEqualTo(host);
+        assertThat(clusterSettings.getHosts().get(0).getPort()).isEqualTo(Integer.parseInt(port));
     }
 }
