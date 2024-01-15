@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @ConfigurationProperties(prefix = "mongo")
 @Setter
 public class MongoConfig {
-    private String type;
+    private PropertiesSetType type;
     private LocalParams local;
 
     @Bean
