@@ -6,4 +6,5 @@ import ru.multa.entia.results.api.result.Result;
 
 public interface MongoProperties {
     Result<MongoClientSettings> getSettings();
+    String getDatabaseName();
 }

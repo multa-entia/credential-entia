@@ -38,6 +38,11 @@ class MongoPropertiesAdapter implements MongoProperties {
                 : DefaultResultBuilder.<MongoClientSettings>fail(CR.get(Code.PROPERTIES_ABSENCE));
     }
 
+    @Override
+    public String getDatabaseName() {
+        return properties.containsKey(type) ? properties.get(type).getDatabaseName() : null;
+    }
+
     public void register(final PropertiesSetType type, final MongoProperties properties) {
         this.properties.put(type, properties);
     }

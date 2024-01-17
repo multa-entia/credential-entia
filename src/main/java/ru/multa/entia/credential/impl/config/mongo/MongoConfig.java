@@ -17,6 +17,7 @@ public class MongoConfig {
     private MongoPropertiesAdapter adapter;
     private PropertiesSetType type;
     private LocalMongoProperties local;
+    private String databaseName;
 
     @Bean
     public MongoClient mongoClient() {
@@ -31,7 +32,7 @@ public class MongoConfig {
 
     @Bean
     public MongoTemplate mongoTemplate() {
-        return new MongoTemplate(mongoClient(), "test");
+        return new MongoTemplate(mongoClient(), adapter.getDatabaseName());
     }
 
     private MongoPropertiesAdapter createAdapter() {

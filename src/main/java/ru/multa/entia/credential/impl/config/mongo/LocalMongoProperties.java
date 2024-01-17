@@ -51,6 +51,7 @@ class LocalMongoProperties implements MongoProperties {
     private String scheme;
     private String host;
     private String port;
+    @Getter
     private String databaseName;
 
     @Override
