@@ -1,55 +1,47 @@
 package ru.multa.entia.credential.impl.config.mongo;
 
-import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import ru.multa.entia.results.api.result.Result;
 
-// TODO: test
 @Configuration()
 @ConfigurationProperties(prefix = "mongo")
 @Setter
 public class MongoConfig {
+    private MongoPropertiesAdapter adapter;
     private PropertiesSetType type;
-    private LocalParams local;
+    private LocalMongoProperties local;
 
     @Bean
     public MongoClient mongoClient() {
-        ConnectionString cs = new ConnectionString("mongodb://localhost:27017/test");
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(cs)
-                .build();
-        // TODO: !!!
-//        System.out.println(cs);
-//        throw new Exception("123");
+        adapter = createAdapter();
+        Result<MongoClientSettings> result = adapter.getSettings();
+        if (!result.ok()){
+            throw new RuntimeException(result.seed().code());
+        }
 
-        return MongoClients.create(settings);
+        return MongoClients.create(result.value());
     }
 
     @Bean
     public MongoTemplate mongoTemplate() {
-        // TODO: !!!
-        System.out.println("++++++++++++++++++++++");
         return new MongoTemplate(mongoClient(), "test");
     }
 
-    // TODO: test
-    @Setter
-    @Getter
-    public static class LocalParams {
-        private String scheme;
-        private String host;
-        private int port;
-        private String databaseName;
-
-        public MongoClientSettings getSettings() {
-            return null;
+    private MongoPropertiesAdapter createAdapter() {
+        if (adapter == null) {
+            adapter = new MongoPropertiesAdapter();
+            adapter.setType(type);
+            if (local != null) {
+                adapter.register(LocalMongoProperties.TYPE, local);
+            }
         }
+        return adapter;
     }
 }

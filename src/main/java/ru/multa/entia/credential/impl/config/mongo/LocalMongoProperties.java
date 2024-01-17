@@ -26,8 +26,9 @@ class LocalMongoProperties implements MongoProperties {
         INVALID_CONNECTION_STRING
     }
 
-    private static final String CONNECTION_STRING_TEMPLATE = "%s://%s:%s/%s";
     public static final PropertiesSetType TYPE = PropertiesSetType.LOCAL;
+
+    private static final String CONNECTION_STRING_TEMPLATE = "%s://%s:%s/%s";
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
     static {
         CR.update(Code.INVALID_SCHEME, "credential:properties.mongo.local:invalid-scheme");
