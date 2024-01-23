@@ -37,7 +37,7 @@ class RightRepoTest {
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getValue()).isEqualTo(expectedValue);
 
-        Optional<RightEntityImpl> maybeGotten = repo.findById(saved.getId());
+        Optional<RightEntity> maybeGotten = repo.findById(saved.getId());
         assertThat(maybeGotten).isPresent();
         assertThat(maybeGotten.get().getId()).isEqualTo(saved.getId());
         assertThat(maybeGotten.get().getValue()).isEqualTo(expectedValue);
@@ -53,7 +53,7 @@ class RightRepoTest {
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getValue()).isEqualTo(expectedValue);
 
-        Optional<RightEntityImpl> maybeGotten = repo.findByValue(expectedValue + Faker.str_().random());
+        Optional<RightEntity> maybeGotten = repo.findByValue(expectedValue + Faker.str_().random());
         assertThat(maybeGotten).isEmpty();
     }
 
@@ -67,7 +67,7 @@ class RightRepoTest {
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getValue()).isEqualTo(expectedValue);
 
-        Optional<RightEntityImpl> maybeGotten = repo.findByValue(expectedValue);
+        Optional<RightEntity> maybeGotten = repo.findByValue(expectedValue);
         assertThat(maybeGotten).isPresent();
         assertThat(maybeGotten.get().getId()).isEqualTo(saved.getId());
         assertThat(maybeGotten.get().getValue()).isEqualTo(expectedValue);
@@ -96,7 +96,7 @@ class RightRepoTest {
 
         RightEntityImpl saved = repo.save(entity);
         repo.deleteById(saved.getId());
-        Optional<RightEntityImpl> maybeEntity = repo.findById(saved.getId());
+        Optional<RightEntity> maybeEntity = repo.findById(saved.getId());
 
         assertThat(maybeEntity).isEmpty();
     }
