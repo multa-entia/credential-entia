@@ -71,13 +71,13 @@ public class RightServiceImpl implements RightService {
 
     @Override
     public Result<Right> deleteById(final ObjectId id) {
-        //<
-        throw new RuntimeException("deleteById");
+        repo.deleteById(id);
+        return DefaultResultBuilder.<Right>ok();
     }
 
     @Override
     public Result<Right> deleteByValue(final String value) {
-        //<
-        throw new RuntimeException("deleteByValue");
+        Optional<RightEntity> maybeEntity = repo.deleteByValue(value);
+        return DefaultResultBuilder.<Right>ok(maybeEntity.map(toRightConverter).orElse(null));
     }
 }

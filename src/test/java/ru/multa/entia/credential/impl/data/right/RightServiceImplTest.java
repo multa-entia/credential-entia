@@ -202,22 +202,84 @@ class RightServiceImplTest {
     }
 
     @Test
-    void shouldCheckDeleteById_ifAbsence() {
+    void shouldCheckDeleteById() {
+        Supplier<RightRepo> repoSupplier = () -> {
+            RightRepo repo = Mockito.mock(RightRepo.class);
+            Mockito
+                    .doNothing()
+                    .when(repo)
+                    .deleteById(Mockito.any());
+            return repo;
+        };
 
+        ObjectId expectedId = new ObjectId();
+        RightServiceImpl service = new RightServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        Result<Right> result = service.deleteById(expectedId);
+
+        assertThat(
+                Results.comparator(result)
+                        .isSuccess()
+                        .value(null)
+                        .seedsComparator()
+                        .isNull()
+                        .back()
+                        .compare()
+        ).isTrue();
     }
 
     @Test
-    void shouldCheckDeleteById_ifPresent() {
+    void shouldCheckDeleteByValue_ifEntityAbsence() {
+        Supplier<RightRepo> repoSupplier = () -> {
+            RightRepo repo = Mockito.mock(RightRepo.class);
+            Mockito.when(repo.deleteByValue(Mockito.any())).thenReturn(Optional.empty());
 
+            return repo;
+        };
+
+        RightServiceImpl service = new RightServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        Result<Right> result = service.deleteByValue(Faker.str_().random());
+
+        assertThat(
+                Results.comparator(result)
+                        .isSuccess()
+                        .value(null)
+                        .seedsComparator()
+                        .isNull()
+                        .back()
+                        .compare()
+        ).isTrue();
     }
 
     @Test
-    void shouldCheckDeleteByValue_ifAbsence() {
+    void shouldCheckDeleteByValue_ifEntityPresent() {
+        Function<RightEntity, RightRepo> repoFunction = entity -> {
+            RightRepo repo = Mockito.mock(RightRepo.class);
+            Mockito.when(repo.deleteByValue(Mockito.any())).thenReturn(Optional.of(entity));
 
-    }
+            return repo;
+        };
 
-    @Test
-    void shouldCheckDeleteByValue_ifPresent() {
+        ObjectId expectedId = new ObjectId();
+        String expectedValue = Faker.str_().random();
 
+        RightEntityImpl entity = new RightEntityImpl();
+        entity.setId(expectedId);
+        entity.setValue(expectedValue);
+
+        RightServiceImpl service = new RightServiceImpl(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        Result<Right> result = service.deleteByValue(Faker.str_().random());
+
+        assertThat(
+                Results.comparator(result)
+                        .isSuccess()
+                        .seedsComparator()
+                        .isNull()
+                        .back()
+                        .compare()
+        ).isTrue();
+
+        Right gottenRight = result.value();
+        assertThat(gottenRight.id()).isEqualTo(expectedId);
+        assertThat(gottenRight.value()).isEqualTo(expectedValue);
     }
 }

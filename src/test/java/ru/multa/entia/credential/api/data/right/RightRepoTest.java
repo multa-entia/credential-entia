@@ -108,7 +108,6 @@ class RightRepoTest {
         entity.setValue(expectedValue);
 
         RightEntityImpl saved = repo.save(entity);
-        repo.deleteByValue(expectedValue);
         Optional<RightEntity> maybeEntity = repo.findById(saved.getId());
 
         assertThat(maybeEntity).isEmpty();
