@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface RightRepo extends MongoRepository<RightEntity, ObjectId> {
     Optional<RightEntity> findByValue(String value);
-
+    Optional<RightEntity> deleteByValue(String value);
 }
