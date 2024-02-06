@@ -2,9 +2,10 @@ package ru.multa.entia.credential.impl.config.mongo;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import ru.multa.entia.credential.api.config.mongo.MongoProperties;
+import ru.multa.entia.parameters.api.decryptor.Decryptor;
 import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
 import ru.multa.entia.results.api.seed.Seed;
@@ -14,9 +15,8 @@ import ru.multa.entia.results.impl.seed.DefaultSeedBuilder;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-@Setter
-@Getter
-class LocalMongoProperties implements MongoProperties {
+@Component("localMongoProperties")
+public class LocalMongoProperties implements MongoProperties {
     public enum  Code {
         INVALID_SCHEME,
         INVALID_HOST,
@@ -31,14 +31,13 @@ class LocalMongoProperties implements MongoProperties {
     private static final String CONNECTION_STRING_TEMPLATE = "%s://%s:%s/%s";
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
     static {
-        CR.update(Code.INVALID_SCHEME, "credential:properties.mongo.local:invalid-scheme");
-        CR.update(Code.INVALID_HOST, "credential:properties.mongo.local:invalid-host");
-        CR.update(Code.PORT_NOT_SET, "credential:properties.mongo.local:port-not-set");
-        CR.update(Code.INVALID_PORT, "credential:properties.mongo.local:invalid-port");
-        CR.update(Code.INVALID_DATABASE_NAME, "credential:properties.mongo.local:invalid-database-name");
-        CR.update(Code.INVALID_CONNECTION_STRING, "credential:properties.mongo.local:invalid-connection-string");
+        CR.update(LocalMongoProperties.Code.INVALID_SCHEME, "credential:properties.mongo.local:invalid-scheme");
+        CR.update(LocalMongoProperties.Code.INVALID_HOST, "credential:properties.mongo.local:invalid-host");
+        CR.update(LocalMongoProperties.Code.PORT_NOT_SET, "credential:properties.mongo.local:port-not-set");
+        CR.update(LocalMongoProperties.Code.INVALID_PORT, "credential:properties.mongo.local:invalid-port");
+        CR.update(LocalMongoProperties.Code.INVALID_DATABASE_NAME, "credential:properties.mongo.local:invalid-database-name");
+        CR.update(LocalMongoProperties.Code.INVALID_CONNECTION_STRING, "credential:properties.mongo.local:invalid-connection-string");
     }
-
     private static Seed checkOnEmptiness(final String value, final Code code) {
         return value == null || value.isBlank()
                 ? new DefaultSeedBuilder<MongoClientSettings>()
@@ -48,14 +47,23 @@ class LocalMongoProperties implements MongoProperties {
                 : null;
     }
 
-    private String scheme;
-    private String host;
-    private String port;
-    @Getter
-    private String databaseName;
+    private final String scheme;
+    private final String host;
+    private final String port;
+    private final String databaseName;
+
+    public LocalMongoProperties(@Value("${mongo.properties.localMongoProperties.scheme:}") String scheme,
+                                @Value("${mongo.properties.localMongoProperties.host:}") String host,
+                                @Value("${mongo.properties.localMongoProperties.port:}") String port,
+                                @Value("${mongo.properties.localMongoProperties.databaseName:}") String databaseName) {
+        this.scheme = scheme;
+        this.host = host;
+        this.port = port;
+        this.databaseName = databaseName;
+    }
 
     @Override
-    public Result<MongoClientSettings> getSettings() {
+    public Result<MongoClientSettings> getSettings(final Decryptor<String, Result<String>> decryptor) {
         AtomicReference<MongoClientSettings> reference = new AtomicReference<>();
         return DefaultResultBuilder.<MongoClientSettings>compute(
                 reference::get,
@@ -87,7 +95,13 @@ class LocalMongoProperties implements MongoProperties {
                 },
                 () -> {
                     try{
-                        ConnectionString cs = new ConnectionString(String.format(CONNECTION_STRING_TEMPLATE, scheme, host, port, databaseName));
+                        ConnectionString cs = new ConnectionString(String.format(
+                                CONNECTION_STRING_TEMPLATE,
+                                decryptor.decrypt(scheme).value(),
+                                decryptor.decrypt(host).value(),
+                                decryptor.decrypt(port).value(),
+                                decryptor.decrypt(databaseName).value()
+                        ));
                         MongoClientSettings settings = MongoClientSettings.builder()
                                 .applyConnectionString(cs)
                                 .build();
@@ -101,5 +115,10 @@ class LocalMongoProperties implements MongoProperties {
                     }
                 }
         );
+    }
+
+    @Override
+    public String getDatabaseName(final Decryptor<String, Result<String>> decryptor) {
+        return decryptor.decrypt(databaseName).value();
     }
 }

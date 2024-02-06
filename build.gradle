@@ -28,6 +28,7 @@ ext {
 
 	set('javaFakersVersion', '0.2')
 	set('javaResultsVersion', '0.7.1')
+	set('javaParameters', '0.2')
 }
 
 dependencies {
@@ -48,10 +49,12 @@ dependencies {
 
 	// local impl section
 	implementation "ru.multa.entia:java-results:$javaResultsVersion"
+	implementation "ru.multa.entia:java-parameters:$javaParameters"
 
 	// local test-impl section
 	testImplementation "ru.multa.entia:java-fakers:$javaFakersVersion"
 	testImplementation "ru.multa.entia:java-results:$javaResultsVersion"
+	testImplementation "ru.multa.entia:java-parameters:$javaParameters"
 }
 
 tasks.named('test') {

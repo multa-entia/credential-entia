@@ -1,9 +1,20 @@
 server.port: 70001
 
+jasypt.password.name: CREDENTIAL_ENTIA_PASSWORD
+
+#mongo:
+#  type: LOCAL
+#  local:
+#    scheme: mongodb
+#    host: localhost
+#    port: 27017
+#    databaseName: test_credential
 mongo:
-  type: LOCAL
-  local:
-    scheme: mongodb
-    host: localhost
-    port: 27017
-    databaseName: test_credential
+  collector:
+    type: localMongoProperties
+  properties:
+    localMongoProperties:
+      scheme: EvOs8CQ+Cq0Dp8bcydrn+w==
+      host: RtzbzUwIyyZ0Z/wi4mUnjJzHbqijwU5N
+      port: rp8ArWhIqHnzj/jkdshzsQ==
+      databaseName: z0JY4p/yZqF7i5EA4KDTle5Qcv2h8kV0

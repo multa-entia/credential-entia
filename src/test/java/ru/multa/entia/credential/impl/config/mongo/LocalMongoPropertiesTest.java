@@ -8,9 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import ru.multa.entia.fakers.impl.Faker;
+import ru.multa.entia.parameters.api.decryptor.Decryptor;
 import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
 import ru.multa.entia.results.impl.repository.DefaultCodeRepository;
+import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 import ru.multa.entia.results.utils.Results;
 
 import java.lang.reflect.Field;
@@ -36,8 +38,7 @@ class LocalMongoPropertiesTest {
     @Test
     void shouldCheckSchemeSetting() {
         String expectedScheme = Faker.str_().random();
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setScheme(expectedScheme);
+        LocalMongoProperties properties = new LocalMongoProperties(expectedScheme, null, null, null);
 
         Field field = properties.getClass().getDeclaredField("scheme");
         field.setAccessible(true);
@@ -50,8 +51,7 @@ class LocalMongoPropertiesTest {
     @Test
     void shouldCheckHostSetting() {
         String expectedHost = Faker.str_().random();
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setHost(expectedHost);
+        LocalMongoProperties properties = new LocalMongoProperties(null, expectedHost, null, null);
 
         Field field = properties.getClass().getDeclaredField("host");
         field.setAccessible(true);
@@ -64,8 +64,7 @@ class LocalMongoPropertiesTest {
     @Test
     void shouldCheckPortSetting() {
         String expectedPort = Faker.str_().random();
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setPort(expectedPort);
+        LocalMongoProperties properties = new LocalMongoProperties(null, null, expectedPort, null);
 
         Field field = properties.getClass().getDeclaredField("port");
         field.setAccessible(true);
@@ -78,8 +77,7 @@ class LocalMongoPropertiesTest {
     @Test
     void shouldCheckDatabaseNameSetting() {
         String expectedDatabaseName = Faker.str_().random();
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setDatabaseName(expectedDatabaseName);
+        LocalMongoProperties properties = new LocalMongoProperties(null, null, null, expectedDatabaseName);
 
         Field field = properties.getClass().getDeclaredField("databaseName");
         field.setAccessible(true);
@@ -95,10 +93,9 @@ class LocalMongoPropertiesTest {
     })
     void shouldCheckSettingsGetting_ifSchemeIsNotSet(String initScheme) {
         initScheme = prepareInput(initScheme);
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setScheme(initScheme);
+        LocalMongoProperties properties = new LocalMongoProperties(initScheme, null, null, null);
 
-        Result<MongoClientSettings> result = properties.getSettings();
+        Result<MongoClientSettings> result = properties.getSettings(DefaultResultBuilder::ok);
 
         assertThat(
                 Results.comparator(result)
@@ -119,11 +116,9 @@ class LocalMongoPropertiesTest {
     })
     void shouldCheckSettingsGetting_ifHostIsNotSet(String initHost) {
         initHost = prepareInput(initHost);
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setScheme(Faker.str_().random());
-        properties.setHost(initHost);
+        LocalMongoProperties properties = new LocalMongoProperties(Faker.str_().random(), initHost, null, null);
 
-        Result<MongoClientSettings> result = properties.getSettings();
+        Result<MongoClientSettings> result = properties.getSettings(DefaultResultBuilder::ok);
 
         assertThat(
                 Results.comparator(result)
@@ -144,12 +139,9 @@ class LocalMongoPropertiesTest {
     })
     void shouldCheckSettingsGetting_ifPortIsNotSet(String initPort) {
         initPort = prepareInput(initPort);
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setScheme(Faker.str_().random());
-        properties.setHost(Faker.str_().random());
-        properties.setPort(initPort);
+        LocalMongoProperties properties = new LocalMongoProperties(Faker.str_().random(), Faker.str_().random(), initPort, null);
 
-        Result<MongoClientSettings> result = properties.getSettings();
+        Result<MongoClientSettings> result = properties.getSettings(DefaultResultBuilder::ok);
 
         assertThat(
                 Results.comparator(result)
@@ -171,12 +163,9 @@ class LocalMongoPropertiesTest {
     })
     void shouldCheckSettingsGetting_ifPortHasBadValue(String initPort) {
         initPort = prepareInput(initPort);
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setScheme(Faker.str_().random());
-        properties.setHost(Faker.str_().random());
-        properties.setPort(initPort);
+        LocalMongoProperties properties = new LocalMongoProperties(Faker.str_().random(), Faker.str_().random(), initPort, null);
 
-        Result<MongoClientSettings> result = properties.getSettings();
+        Result<MongoClientSettings> result = properties.getSettings(DefaultResultBuilder::ok);
 
         assertThat(
                 Results.comparator(result)
@@ -197,13 +186,9 @@ class LocalMongoPropertiesTest {
     })
     void shouldCheckSettingsGetting_ifDatabaseNameIsNotSet(String intiDatabaseName) {
         intiDatabaseName = prepareInput(intiDatabaseName);
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setScheme(Faker.str_().random());
-        properties.setHost(Faker.str_().random());
-        properties.setPort(String.valueOf(Faker.int_().between(0, 0xFFFF)));
-        properties.setDatabaseName(intiDatabaseName);
+        LocalMongoProperties properties = new LocalMongoProperties(Faker.str_().random(), Faker.str_().random(), String.valueOf(Faker.int_().between(0, 0xFFFF)), intiDatabaseName);
 
-        Result<MongoClientSettings> result = properties.getSettings();
+        Result<MongoClientSettings> result = properties.getSettings(DefaultResultBuilder::ok);
 
         assertThat(
                 Results.comparator(result)
@@ -219,13 +204,9 @@ class LocalMongoPropertiesTest {
 
     @Test
     void shouldCheckSettingsGetting_ifBadConnectionString() {
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setScheme(Faker.str_().random());
-        properties.setHost(Faker.str_().random());
-        properties.setPort(String.valueOf(Faker.int_().between(0, 0xFFFF)));
-        properties.setDatabaseName(Faker.str_().random());
+        LocalMongoProperties properties = new LocalMongoProperties(Faker.str_().random(), Faker.str_().random(), String.valueOf(Faker.int_().between(0, 0xFFFF)), Faker.str_().random());
 
-        Result<MongoClientSettings> result = properties.getSettings();
+        Result<MongoClientSettings> result = properties.getSettings(DefaultResultBuilder::ok);
 
         assertThat(
                 Results.comparator(result)
@@ -246,18 +227,9 @@ class LocalMongoPropertiesTest {
         String databaseName = "test";
         String expected = String.format("%s://%s:%s/%s", scheme, host, port, databaseName);
 
-        LocalMongoProperties properties = new LocalMongoProperties();
-        properties.setScheme(scheme);
-        properties.setHost(host);
-        properties.setPort(port);
-        properties.setDatabaseName(databaseName);
+        LocalMongoProperties properties = new LocalMongoProperties(scheme, host, port, databaseName);
 
-        Result<MongoClientSettings> result = properties.getSettings();
-
-        ConnectionString cs = new ConnectionString(expected);
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(cs)
-                .build();
+        Result<MongoClientSettings> result = properties.getSettings(DefaultResultBuilder::ok);
 
         assertThat(
                 Results.comparator(result)

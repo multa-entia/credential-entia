@@ -1,1 +1,11 @@
 server.port: 50001
+
+mongo:
+  collector:
+    type: localMongoProperties
+  properties:
+    localMongoProperties:
+      scheme: EvOs8CQ+Cq0Dp8bcydrn+w==
+      host: RtzbzUwIyyZ0Z/wi4mUnjJzHbqijwU5N
+      port: rp8ArWhIqHnzj/jkdshzsQ==
+      databaseName: BL6o1B9gG0TDNx/ktt1MkxMt3pTBrHDf
