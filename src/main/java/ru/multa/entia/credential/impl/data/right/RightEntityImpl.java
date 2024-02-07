@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import ru.multa.entia.credential.api.data.right.RightEntity;
 
-@Document(collection = "right_collection")
+@Document
 @Data
 public class RightEntityImpl implements RightEntity {
     @Id

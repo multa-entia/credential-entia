@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.ActiveProfiles;
-import ru.multa.entia.credential.api.data.right.RightRepo;
 import ru.multa.entia.credential.impl.data.right.RightEntityImpl;
 import ru.multa.entia.fakers.impl.Faker;
 
@@ -108,6 +107,7 @@ class RightRepoTest {
         entity.setValue(expectedValue);
 
         RightEntityImpl saved = repo.save(entity);
+        repo.deleteByValue(expectedValue);
         Optional<RightEntity> maybeEntity = repo.findById(saved.getId());
 
         assertThat(maybeEntity).isEmpty();

@@ -1,6 +1,5 @@
 package ru.multa.entia.credential.impl.config.mongo;
 
-import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.connection.ClusterSettings;
 import lombok.SneakyThrows;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import ru.multa.entia.fakers.impl.Faker;
-import ru.multa.entia.parameters.api.decryptor.Decryptor;
 import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
 import ru.multa.entia.results.impl.repository.DefaultCodeRepository;

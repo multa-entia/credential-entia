@@ -2,13 +2,6 @@ server.port: 70001
 
 jasypt.password.name: CREDENTIAL_ENTIA_PASSWORD
 
-#mongo:
-#  type: LOCAL
-#  local:
-#    scheme: mongodb
-#    host: localhost
-#    port: 27017
-#    databaseName: test_credential
 mongo:
   collector:
     type: localMongoProperties

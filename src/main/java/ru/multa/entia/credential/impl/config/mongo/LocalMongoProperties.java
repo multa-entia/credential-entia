@@ -26,8 +26,6 @@ public class LocalMongoProperties implements MongoProperties {
         INVALID_CONNECTION_STRING
     }
 
-    public static final PropertiesSetType TYPE = PropertiesSetType.LOCAL;
-
     private static final String CONNECTION_STRING_TEMPLATE = "%s://%s:%s/%s";
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
     static {
@@ -79,7 +77,7 @@ public class LocalMongoProperties implements MongoProperties {
                 () -> {
                     Code code = null;
                     try{
-                        int portI = Integer.parseInt(port);
+                        int portI = Integer.parseInt(decryptor.decrypt(port).value());
                         if (portI < 0 || portI > 0xFFFF) {
                             code = Code.INVALID_PORT;
                         }
