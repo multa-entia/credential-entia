@@ -1,4 +1,4 @@
-server.port: 70001
+server.port: 60001
 
 jasypt.password.name: CREDENTIAL_ENTIA_PASSWORD
 
