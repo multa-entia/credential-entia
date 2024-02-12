@@ -2,6 +2,7 @@ package ru.multa.entia.credential.api.data.usr;
 
 import org.bson.types.ObjectId;
 import ru.multa.entia.credential.api.data.right.Right;
+import ru.multa.entia.credential.api.data.right.RightEntity;
 
 import java.util.Objects;
 import java.util.Set;
@@ -17,6 +18,6 @@ public interface UsrEntity {
     String getSurname();
     void setEmail(String email);
     String getEmail();
-    void setRights(Set<Right> rights);
-    Set<Right> getRights();
+    void setRights(Set<RightEntity> rights);
+    Set<RightEntity> getRights();
 }
