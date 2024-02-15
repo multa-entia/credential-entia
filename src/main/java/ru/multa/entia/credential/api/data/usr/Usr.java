@@ -11,5 +11,4 @@ public interface Usr {
     String paterName();
     String surname();
     String email();
-    Set<Right> rights();
 }

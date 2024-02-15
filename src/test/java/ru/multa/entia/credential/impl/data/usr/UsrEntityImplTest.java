@@ -3,12 +3,9 @@ package ru.multa.entia.credential.impl.data.usr;
 import lombok.SneakyThrows;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.RepeatedTest;
-import org.mockito.Mockito;
-import ru.multa.entia.credential.api.data.right.Right;
 import ru.multa.entia.fakers.impl.Faker;
 
 import java.lang.reflect.Field;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +28,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckIdGetting() {
         ObjectId expectedId = new ObjectId();
-        UsrEntityImpl entity = new UsrEntityImpl(expectedId, null, null, null, null, null);
+        UsrEntityImpl entity = new UsrEntityImpl(expectedId, null, null, null, null);
 
         assertThat(entity.getId()).isEqualTo(expectedId);
     }
@@ -53,7 +50,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckFirstNameGetting() {
         String expectedFirstName = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl(null, expectedFirstName, null, null, null, null);
+        UsrEntityImpl entity = new UsrEntityImpl(null, expectedFirstName, null, null, null);
 
         assertThat(entity.getFirstName()).isEqualTo(expectedFirstName);
     }
@@ -75,7 +72,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckPaterNameGetting() {
         String expectedPaterName = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl(null, null, expectedPaterName, null, null, null);
+        UsrEntityImpl entity = new UsrEntityImpl(null, null, expectedPaterName, null, null);
 
         assertThat(entity.getPaterName()).isEqualTo(expectedPaterName);
     }
@@ -97,7 +94,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckSurnameGetting() {
         String expectedSurname = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl(null, null, null, expectedSurname, null, null);
+        UsrEntityImpl entity = new UsrEntityImpl(null, null, null, expectedSurname, null);
 
         assertThat(entity.getSurname()).isEqualTo(expectedSurname);
     }
@@ -119,40 +116,8 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckEmailGetting() {
         String expectedEmail = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl(null, null, null, null, expectedEmail, null);
+        UsrEntityImpl entity = new UsrEntityImpl(null, null, null, null, expectedEmail);
 
         assertThat(entity.getEmail()).isEqualTo(expectedEmail);
-    }
-
-    @SuppressWarnings("unchecked")
-    @SneakyThrows
-    @RepeatedTest(100)
-    void shouldCheckRightsSetting() {
-        // TODO: restore
-//        Set<Right> expectedRights = Set.of(
-//                Mockito.mock(Right.class),
-//                Mockito.mock(Right.class)
-//        );
-//
-//        UsrEntityImpl entity = new UsrEntityImpl();
-//        entity.setRights(expectedRights);
-//
-//        Field field = entity.getClass().getDeclaredField("rights");
-//        field.setAccessible(true);
-//        Set<Right> gottenRights = (Set<Right>) field.get(entity);
-//
-//        assertThat(gottenRights).isEqualTo(expectedRights);
-    }
-
-    @RepeatedTest(100)
-    void shouldCheckRightsGetting() {
-        // TODO: restore
-//        Set<Right> expectedRights = Set.of(
-//                Mockito.mock(Right.class),
-//                Mockito.mock(Right.class)
-//        );
-//        UsrEntityImpl entity = new UsrEntityImpl(null, null, null, null, null, expectedRights);
-//
-//        assertThat(entity.getRights()).isEqualTo(expectedRights);
     }
 }

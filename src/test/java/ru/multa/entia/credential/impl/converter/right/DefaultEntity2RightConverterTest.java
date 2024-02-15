@@ -12,14 +12,13 @@ class DefaultEntity2RightConverterTest {
 
     @Test
     void shouldCheckConversion() {
-        // TODO: restore
-//        ObjectId expectedId = new ObjectId();
-//        String expectedValue = Faker.str_().random();
-//        RightEntityImpl entity = new RightEntityImpl(expectedId, expectedValue);
-//
-//        Right right = new DefaultEntity2RightConverter().apply(entity);
-//
-//        assertThat(right.id()).isEqualTo(entity.getId());
-//        assertThat(right.value()).isEqualTo(entity.getValue());
+        ObjectId expectedId = new ObjectId();
+        String expectedValue = Faker.str_().random();
+        RightEntityImpl entity = new RightEntityImpl(expectedId, expectedValue);
+
+        Right right = new DefaultEntity2RightConverter().apply(entity);
+
+        assertThat(right.id()).isEqualTo(entity.getId());
+        assertThat(right.value()).isEqualTo(entity.getValue());
     }
 }

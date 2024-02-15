@@ -11,7 +11,6 @@ import java.util.function.Function;
 public class DefaultRight2EntityConverter implements Function<Right, RightEntity> {
     @Override
     public RightEntity apply(final Right right) {
-        // TODO: !!! null
-        return new RightEntityImpl(right.id(), right.value(), null);
+        return new RightEntityImpl(right.id(), right.value());
     }
 }
