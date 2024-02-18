@@ -1,23 +1,16 @@
 package ru.multa.entia.credential.api.data.usr;
 
-// TODO: impl it
+import org.bson.types.ObjectId;
+import ru.multa.entia.results.api.result.Result;
+
+import java.util.List;
+
 public interface UsrService {
-    /*
-    public interface RightService {
-    Result<Right> getById(ObjectId id);
-    Result<Right> findOneByValue(String value);
-    Result<Right> save(Right right);
-    Result<Right> deleteById(ObjectId id);
-    Result<Right> deleteByValue(String value);
-}
-     */
-
-    /*
-
-        List<UsrEntity> findByFirstName(String firstName);
-    List<UsrEntity> findByPaterName(String paterName);
-    List<UsrEntity> findBySurname(String surname);
-    List<UsrEntity> findByEmail(String email);
-
-     */
+    Result<Usr> getById(ObjectId id);
+    Result<Usr> save(Usr user);
+    Result<List<Usr>> findByFirstName(String firstName);
+    Result<List<Usr>> findByPaterName(String paterName);
+    Result<List<Usr>> findBySurname(String surname);
+    Result<List<Usr>> findByEmail(String email);
+    Result<Usr> deleteById(ObjectId id);
 }
