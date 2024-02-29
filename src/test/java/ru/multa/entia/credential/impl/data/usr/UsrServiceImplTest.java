@@ -179,7 +179,7 @@ class UsrServiceImplTest {
         };
 
         UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
-        Result<List<Usr>> result = service.findByFirstName(Faker.str_().random());
+        Result<List<Usr>> result = service.getByFirstName(Faker.str_().random());
 
         assertThat(
                 Results.comparator(result)
@@ -218,7 +218,7 @@ class UsrServiceImplTest {
         };
 
         UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
-        Result<List<Usr>> result = service.findByFirstName(Faker.str_().random());
+        Result<List<Usr>> result = service.getByFirstName(Faker.str_().random());
 
         assertThat(
                 Results.comparator(result)
@@ -244,7 +244,7 @@ class UsrServiceImplTest {
         };
 
         UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
-        Result<List<Usr>> result = service.findByPaterName(Faker.str_().random());
+        Result<List<Usr>> result = service.getByPaterName(Faker.str_().random());
 
         assertThat(
                 Results.comparator(result)
@@ -284,7 +284,7 @@ class UsrServiceImplTest {
         };
 
         UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
-        Result<List<Usr>> result = service.findByPaterName(Faker.str_().random());
+        Result<List<Usr>> result = service.getByPaterName(Faker.str_().random());
 
         assertThat(
                 Results.comparator(result)
@@ -310,7 +310,7 @@ class UsrServiceImplTest {
         };
 
         UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
-        Result<List<Usr>> result = service.findBySurname(Faker.str_().random());
+        Result<List<Usr>> result = service.getBySurname(Faker.str_().random());
 
         assertThat(
                 Results.comparator(result)
@@ -350,7 +350,7 @@ class UsrServiceImplTest {
         };
 
         UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
-        Result<List<Usr>> result = service.findBySurname(Faker.str_().random());
+        Result<List<Usr>> result = service.getBySurname(Faker.str_().random());
 
         assertThat(
                 Results.comparator(result)
@@ -376,7 +376,7 @@ class UsrServiceImplTest {
         };
 
         UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
-        Result<List<Usr>> result = service.findByEmail(Faker.str_().random());
+        Result<List<Usr>> result = service.getByEmail(Faker.str_().random());
 
         assertThat(
                 Results.comparator(result)
@@ -415,7 +415,7 @@ class UsrServiceImplTest {
         };
 
         UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
-        Result<List<Usr>> result = service.findByEmail(Faker.str_().random());
+        Result<List<Usr>> result = service.getByEmail(Faker.str_().random());
 
         assertThat(
                 Results.comparator(result)

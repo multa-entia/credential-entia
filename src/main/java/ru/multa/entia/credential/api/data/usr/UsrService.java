@@ -8,9 +8,9 @@ import java.util.List;
 public interface UsrService {
     Result<Usr> getById(ObjectId id);
     Result<Usr> save(Usr user);
-    Result<List<Usr>> findByFirstName(String firstName);
-    Result<List<Usr>> findByPaterName(String paterName);
-    Result<List<Usr>> findBySurname(String surname);
-    Result<List<Usr>> findByEmail(String email);
+    Result<List<Usr>> getByFirstName(String firstName);
+    Result<List<Usr>> getByPaterName(String paterName);
+    Result<List<Usr>> getBySurname(String surname);
+    Result<List<Usr>> getByEmail(String email);
     Result<Usr> deleteById(ObjectId id);
 }

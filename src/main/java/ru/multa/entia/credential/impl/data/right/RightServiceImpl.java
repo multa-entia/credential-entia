@@ -52,7 +52,7 @@ public class RightServiceImpl implements RightService {
     }
 
     @Override
-    public Result<Right> findOneByValue(final String value) {
+    public Result<Right> getOneByValue(final String value) {
         Optional<RightEntity> maybeEntity = repo.findByValue(value);
         return maybeEntity.isPresent()
                 ? DefaultResultBuilder.<Right>ok(toRightConverter.apply(maybeEntity.get()))

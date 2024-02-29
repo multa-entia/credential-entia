@@ -96,7 +96,7 @@ class RightServiceImplTest {
 
         String expectedValue = Faker.str_().random();
         RightServiceImpl service = new RightServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
-        Result<Right> result = service.findOneByValue(expectedValue);
+        Result<Right> result = service.getOneByValue(expectedValue);
 
         assertThat(
                 Results.comparator(result)
@@ -126,7 +126,7 @@ class RightServiceImplTest {
         entity.setValue(expectedValue);
 
         RightServiceImpl service = new RightServiceImpl(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
-        Result<Right> result = service.findOneByValue(expectedValue);
+        Result<Right> result = service.getOneByValue(expectedValue);
 
         assertThat(
                 Results.comparator(result)

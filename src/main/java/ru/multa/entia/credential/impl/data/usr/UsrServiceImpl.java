@@ -69,7 +69,7 @@ public class UsrServiceImpl implements UsrService {
     }
 
     @Override
-    public Result<List<Usr>> findByFirstName(final String firstName) {
+    public Result<List<Usr>> getByFirstName(final String firstName) {
         List<UsrEntity> entities = repo.findByFirstName(firstName);
         return entities.isEmpty()
                 ? createFailResult(Code.ENTITIES_BY_FIRST_NAME_ABSENCE)
@@ -77,7 +77,7 @@ public class UsrServiceImpl implements UsrService {
     }
 
     @Override
-    public Result<List<Usr>> findByPaterName(final String paterName) {
+    public Result<List<Usr>> getByPaterName(final String paterName) {
         List<UsrEntity> entities = repo.findByPaterName(paterName);
         return entities.isEmpty()
                 ? createFailResult(Code.ENTITIES_BY_PATER_NAME_ABSENCE)
@@ -85,7 +85,7 @@ public class UsrServiceImpl implements UsrService {
     }
 
     @Override
-    public Result<List<Usr>> findBySurname(final String surname) {
+    public Result<List<Usr>> getBySurname(final String surname) {
         List<UsrEntity> entities = repo.findBySurname(surname);
         return entities.isEmpty()
                 ? createFailResult(Code.ENTITIES_BY_SURNAME_ABSENCE)
@@ -93,7 +93,7 @@ public class UsrServiceImpl implements UsrService {
     }
 
     @Override
-    public Result<List<Usr>> findByEmail(final String email) {
+    public Result<List<Usr>> getByEmail(final String email) {
         List<UsrEntity> entities = repo.findByEmail(email);
         return entities.isEmpty()
                 ? createFailResult(Code.ENTITIES_BY_EMAIL_ABSENCE)
