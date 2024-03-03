@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-// TODO: test
 public interface BridgeRepo extends MongoRepository<BridgeEntity, ObjectId> {
     List<BridgeEntity> findByUserId(ObjectId userId);
     List<BridgeEntity> findByRightId(ObjectId rightId);

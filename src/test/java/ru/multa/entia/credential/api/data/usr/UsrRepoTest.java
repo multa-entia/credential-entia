@@ -1,21 +1,15 @@
 package ru.multa.entia.credential.api.data.usr;
 
-import org.assertj.core.api.Assertions;
-import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import ru.multa.entia.credential.api.data.right.RightEntity;
-import ru.multa.entia.credential.api.data.right.RightRepo;
-import ru.multa.entia.credential.impl.data.right.RightEntityImpl;
 import ru.multa.entia.credential.impl.data.usr.UsrEntityImpl;
 import ru.multa.entia.fakers.impl.Faker;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
