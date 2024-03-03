@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import ru.multa.entia.credential.api.data.usr.UsrEntity;
 
+// TODO: rename to Default...
 @Document
 @Data
 public class UsrEntityImpl implements UsrEntity {

@@ -15,6 +15,7 @@ import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 import java.util.Optional;
 import java.util.function.Function;
 
+// TODO: rename to Default...
 @Service
 public class RightServiceImpl implements RightService {
     public enum Code {

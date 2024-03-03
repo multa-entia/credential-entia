@@ -5,6 +5,7 @@ import ru.multa.entia.credential.api.data.usr.Usr;
 
 import java.util.Objects;
 
+// TODO: rename to Default...
 public record UsrImpl(ObjectId id,
                       String firstName,
                       String paterName,

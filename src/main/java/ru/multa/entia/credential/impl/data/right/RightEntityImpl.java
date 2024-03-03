@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import ru.multa.entia.credential.api.data.right.RightEntity;
 
+// TODO: rename to Default...
 @Document
 @Data
 public class RightEntityImpl implements RightEntity {
