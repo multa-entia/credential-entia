@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.ActiveProfiles;
-import ru.multa.entia.credential.impl.data.right.RightEntityImpl;
+import ru.multa.entia.credential.impl.data.right.DefaultRightEntity;
 import ru.multa.entia.fakers.impl.Faker;
 
 import java.util.Optional;
@@ -29,10 +29,10 @@ class RightRepoTest {
     @Test
     void shouldCheckSaveAndFindById() {
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setValue(expectedValue);
 
-        RightEntityImpl saved = repo.save(entity);
+        DefaultRightEntity saved = repo.save(entity);
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getValue()).isEqualTo(expectedValue);
 
@@ -45,10 +45,10 @@ class RightRepoTest {
     @Test
     void shouldCheckSaveAndFindByValue_ifAbsence() {
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setValue(expectedValue);
 
-        RightEntityImpl saved = repo.save(entity);
+        DefaultRightEntity saved = repo.save(entity);
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getValue()).isEqualTo(expectedValue);
 
@@ -59,10 +59,10 @@ class RightRepoTest {
     @Test
     void shouldCheckSaveAndFindByValue() {
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setValue(expectedValue);
 
-        RightEntityImpl saved = repo.save(entity);
+        DefaultRightEntity saved = repo.save(entity);
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getValue()).isEqualTo(expectedValue);
 
@@ -75,12 +75,12 @@ class RightRepoTest {
     @Test
     void shouldSaveWithOneValue() {
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setValue(expectedValue);
         repo.save(entity);
 
         Throwable throwable = catchThrowable(() -> {
-            RightEntityImpl newEntity = new RightEntityImpl();
+            DefaultRightEntity newEntity = new DefaultRightEntity();
             newEntity.setValue(expectedValue);
             repo.save(newEntity);
         });
@@ -90,10 +90,10 @@ class RightRepoTest {
     @Test
     void shouldCheckDelete() {
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setValue(expectedValue);
 
-        RightEntityImpl saved = repo.save(entity);
+        DefaultRightEntity saved = repo.save(entity);
         repo.deleteById(saved.getId());
         Optional<RightEntity> maybeEntity = repo.findById(saved.getId());
 
@@ -103,10 +103,10 @@ class RightRepoTest {
     @Test
     void shouldCheckDeleteByValue() {
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setValue(expectedValue);
 
-        RightEntityImpl saved = repo.save(entity);
+        DefaultRightEntity saved = repo.save(entity);
         repo.deleteByValue(expectedValue);
         Optional<RightEntity> maybeEntity = repo.findById(saved.getId());
 

@@ -51,7 +51,7 @@ class DefaultBridgeServiceTest {
 
     @Test
     void shouldCheckGettingById() {
-        BridgeEntityImpl expectedEntity = new BridgeEntityImpl(new ObjectId(), new ObjectId(), new ObjectId());
+        DefaultBridgeEntity expectedEntity = new DefaultBridgeEntity(new ObjectId(), new ObjectId(), new ObjectId());
 
         Supplier<BridgeRepo> supplier = () -> {
             BridgeRepo repo = Mockito.mock(BridgeRepo.class);
@@ -86,7 +86,7 @@ class DefaultBridgeServiceTest {
         };
 
         Result<Bridge> result = new DefaultBridgeService(supplier.get(), TO_ENTITY_CONVERTER, TO_BRIDGE_CONVERTER)
-                .save(new BridgeImpl(new ObjectId(), new ObjectId(), new ObjectId()));
+                .save(new DefaultBridge(new ObjectId(), new ObjectId(), new ObjectId()));
 
         assertThat(
                 Results.comparator(result)
@@ -101,7 +101,7 @@ class DefaultBridgeServiceTest {
 
     @Test
     void shouldCheckSaving() {
-        BridgeEntityImpl entity = new BridgeEntityImpl(new ObjectId(), new ObjectId(), new ObjectId());
+        DefaultBridgeEntity entity = new DefaultBridgeEntity(new ObjectId(), new ObjectId(), new ObjectId());
         Supplier<BridgeRepo> supplier = () -> {
             BridgeRepo repo = Mockito.mock(BridgeRepo.class);
             Mockito
@@ -112,7 +112,7 @@ class DefaultBridgeServiceTest {
         };
 
         Result<Bridge> result = new DefaultBridgeService(supplier.get(), TO_ENTITY_CONVERTER, TO_BRIDGE_CONVERTER)
-                .save(new BridgeImpl(new ObjectId(), new ObjectId(), new ObjectId()));
+                .save(new DefaultBridge(new ObjectId(), new ObjectId(), new ObjectId()));
 
         assertThat(
                 Results.comparator(result)
@@ -155,8 +155,8 @@ class DefaultBridgeServiceTest {
     @Test
     void shouldCheckGettingByUserId() {
         List<BridgeEntity> bridgeEntities = List.of(
-                new BridgeEntityImpl(new ObjectId(), new ObjectId(), new ObjectId()),
-                new BridgeEntityImpl(new ObjectId(), new ObjectId(), new ObjectId())
+                new DefaultBridgeEntity(new ObjectId(), new ObjectId(), new ObjectId()),
+                new DefaultBridgeEntity(new ObjectId(), new ObjectId(), new ObjectId())
         );
 
         Supplier<BridgeRepo> supplier = () -> {
@@ -206,8 +206,8 @@ class DefaultBridgeServiceTest {
     @Test
     void shouldCheckGettingByRightId() {
         List<BridgeEntity> bridgeEntities = List.of(
-                new BridgeEntityImpl(new ObjectId(), new ObjectId(), new ObjectId()),
-                new BridgeEntityImpl(new ObjectId(), new ObjectId(), new ObjectId())
+                new DefaultBridgeEntity(new ObjectId(), new ObjectId(), new ObjectId()),
+                new DefaultBridgeEntity(new ObjectId(), new ObjectId(), new ObjectId())
         );
 
         Supplier<BridgeRepo> supplier = () -> {
@@ -257,8 +257,8 @@ class DefaultBridgeServiceTest {
     @Test
     void shouldCheckGettingByUserAndRightId() {
         List<BridgeEntity> bridgeEntities = List.of(
-                new BridgeEntityImpl(new ObjectId(), new ObjectId(), new ObjectId()),
-                new BridgeEntityImpl(new ObjectId(), new ObjectId(), new ObjectId())
+                new DefaultBridgeEntity(new ObjectId(), new ObjectId(), new ObjectId()),
+                new DefaultBridgeEntity(new ObjectId(), new ObjectId(), new ObjectId())
         );
 
         Supplier<BridgeRepo> supplier = () -> {

@@ -3,7 +3,7 @@ package ru.multa.entia.credential.impl.converter.usr;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import ru.multa.entia.credential.api.data.usr.Usr;
-import ru.multa.entia.credential.impl.data.usr.UsrEntityImpl;
+import ru.multa.entia.credential.impl.data.usr.DefaultUsrEntity;
 import ru.multa.entia.fakers.impl.Faker;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,7 +18,7 @@ class DefaultEntity2UsrConverterTest {
         String expectedSurname = Faker.str_().random();
         String expectedEmail = Faker.str_().random();
 
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setId(expectedId);
         entity.setFirstName(expectedFirstName);
         entity.setPaterName(expectedPaterName);

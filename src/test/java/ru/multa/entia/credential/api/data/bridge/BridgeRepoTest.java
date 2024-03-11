@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import ru.multa.entia.credential.impl.data.bridge.BridgeEntityImpl;
+import ru.multa.entia.credential.impl.data.bridge.DefaultBridgeEntity;
 import ru.multa.entia.fakers.impl.Faker;
 
 import java.util.ArrayList;
@@ -35,9 +35,9 @@ class BridgeRepoTest {
         ObjectId expectedUserId = new ObjectId();
         ObjectId expectedRightId = new ObjectId();
 
-        BridgeEntityImpl entity = new BridgeEntityImpl(null, expectedUserId, expectedRightId);
+        DefaultBridgeEntity entity = new DefaultBridgeEntity(null, expectedUserId, expectedRightId);
 
-        BridgeEntityImpl saved = repo.save(entity);
+        DefaultBridgeEntity saved = repo.save(entity);
         assertThat(saved.getId()).isNotNull();
 
         Optional<BridgeEntity> maybeEntity = repo.findById(saved.getId());
@@ -62,7 +62,7 @@ class BridgeRepoTest {
 
         ArrayList<BridgeEntity> entitiesForSaving = new ArrayList<>();
         for (int i = 0; i < entitiesQuantity; i++) {
-            BridgeEntityImpl entity = new BridgeEntityImpl(null, expectedUserId, new ObjectId());
+            DefaultBridgeEntity entity = new DefaultBridgeEntity(null, expectedUserId, new ObjectId());
             entitiesForSaving.add(entity);
             repo.save(entity);
         }
@@ -90,7 +90,7 @@ class BridgeRepoTest {
 
         ArrayList<BridgeEntity> entitiesForSaving = new ArrayList<>();
         for (int i = 0; i < entitiesQuantity; i++) {
-            BridgeEntityImpl entity = new BridgeEntityImpl(null, new ObjectId(), expectedRightId);
+            DefaultBridgeEntity entity = new DefaultBridgeEntity(null, new ObjectId(), expectedRightId);
             entitiesForSaving.add(entity);
             repo.save(entity);
         }
@@ -118,7 +118,7 @@ class BridgeRepoTest {
         ObjectId userIdForFinding = userIdPresent ? userIdForSaving : new ObjectId();
         ObjectId rightIdForFinding = rightIdPresent ? rightIdForSaving : new ObjectId();
 
-        repo.save(new BridgeEntityImpl(null, userIdForSaving, rightIdForSaving));
+        repo.save(new DefaultBridgeEntity(null, userIdForSaving, rightIdForSaving));
         List<BridgeEntity> result = repo.findByUserIdAndRightId(userIdForFinding, rightIdForFinding);
 
         assertThat(result).isEmpty();
@@ -126,7 +126,7 @@ class BridgeRepoTest {
 
     @RepeatedTest(10)
     void shouldCheckFindingByUserAndRightIds() {
-        BridgeEntityImpl entity = new BridgeEntityImpl(null, new ObjectId(), new ObjectId());
+        DefaultBridgeEntity entity = new DefaultBridgeEntity(null, new ObjectId(), new ObjectId());
         repo.save(entity);
         List<BridgeEntity> result = repo.findByUserIdAndRightId(entity.getUserId(), entity.getRightId());
 

@@ -16,9 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-// TODO: rename to Default...
 @Service
-public class UsrServiceImpl implements UsrService {
+public class DefaultUsrService implements UsrService {
     public enum Code {
         ENTITY_BY_ID_ABSENCE,
         ENTITIES_BY_FIRST_NAME_ABSENCE,
@@ -43,9 +42,9 @@ public class UsrServiceImpl implements UsrService {
     private final Function<UsrEntity, Usr> toUsrConverter;
 
     @Autowired
-    public UsrServiceImpl(final UsrRepo repo,
-                          final Function<Usr, UsrEntity> toEntityConverter,
-                          final Function<UsrEntity, Usr> toUsrConverter) {
+    public DefaultUsrService(final UsrRepo repo,
+                             final Function<Usr, UsrEntity> toEntityConverter,
+                             final Function<UsrEntity, Usr> toUsrConverter) {
         this.repo = repo;
         this.toEntityConverter = toEntityConverter;
         this.toUsrConverter = toUsrConverter;

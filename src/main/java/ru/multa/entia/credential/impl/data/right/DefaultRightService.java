@@ -15,9 +15,8 @@ import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 import java.util.Optional;
 import java.util.function.Function;
 
-// TODO: rename to Default...
 @Service
-public class RightServiceImpl implements RightService {
+public class DefaultRightService implements RightService {
     public enum Code {
         ENTITY_BY_ID_ABSENCE,
         ENTITY_BY_VALUE_ABSENCE,
@@ -36,9 +35,9 @@ public class RightServiceImpl implements RightService {
     private final Function<RightEntity, Right> toRightConverter;
 
     @Autowired
-    public RightServiceImpl(final RightRepo repo,
-                            final Function<Right, RightEntity> toEntityConverter,
-                            final Function<RightEntity, Right> toRightConverter) {
+    public DefaultRightService(final RightRepo repo,
+                               final Function<Right, RightEntity> toEntityConverter,
+                               final Function<RightEntity, Right> toRightConverter) {
         this.repo = repo;
         this.toEntityConverter = toEntityConverter;
         this.toRightConverter = toRightConverter;

@@ -6,10 +6,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import ru.multa.entia.credential.api.data.usr.UsrEntity;
 
-// TODO: rename to Default...
 @Document
 @Data
-public class UsrEntityImpl implements UsrEntity {
+public class DefaultUsrEntity implements UsrEntity {
     @Id
     private ObjectId id;
     private String firstName;
@@ -17,14 +16,14 @@ public class UsrEntityImpl implements UsrEntity {
     private String surname;
     private String email;
 
-    public UsrEntityImpl() {
+    public DefaultUsrEntity() {
     }
 
-    public UsrEntityImpl(final ObjectId id,
-                         final String firstName,
-                         final String paterName,
-                         final String surname,
-                         final String email) {
+    public DefaultUsrEntity(final ObjectId id,
+                            final String firstName,
+                            final String paterName,
+                            final String surname,
+                            final String email) {
         this.id = id;
         this.firstName = firstName;
         this.paterName = paterName;

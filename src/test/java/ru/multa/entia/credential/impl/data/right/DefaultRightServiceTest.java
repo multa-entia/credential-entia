@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertWith;
 
-class RightServiceImplTest {
+class DefaultRightServiceTest {
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
     private static  final Function<Right, RightEntity> TO_ENTITY_CONVERTER = new DefaultRight2EntityConverter();
     private static final Function<RightEntity, Right> TO_RIGHT_CONVERTER = new DefaultEntity2RightConverter();
@@ -38,7 +38,7 @@ class RightServiceImplTest {
         };
 
         ObjectId objectId = new ObjectId();
-        RightServiceImpl service = new RightServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        DefaultRightService service = new DefaultRightService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
         Result<Right> result = service.getById(objectId);
 
         assertThat(
@@ -46,7 +46,7 @@ class RightServiceImplTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(RightServiceImpl.Code.ENTITY_BY_ID_ABSENCE))
+                        .code(CR.get(DefaultRightService.Code.ENTITY_BY_ID_ABSENCE))
                         .args(objectId)
                         .back()
                         .compare()
@@ -64,11 +64,11 @@ class RightServiceImplTest {
 
         ObjectId expectedId = new ObjectId();
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setId(expectedId);
         entity.setValue(expectedValue);
 
-        RightServiceImpl service = new RightServiceImpl(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        DefaultRightService service = new DefaultRightService(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
         Result<Right> result = service.getById(expectedId);
 
         assertThat(
@@ -95,7 +95,7 @@ class RightServiceImplTest {
         };
 
         String expectedValue = Faker.str_().random();
-        RightServiceImpl service = new RightServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        DefaultRightService service = new DefaultRightService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
         Result<Right> result = service.getOneByValue(expectedValue);
 
         assertThat(
@@ -103,7 +103,7 @@ class RightServiceImplTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(RightServiceImpl.Code.ENTITY_BY_VALUE_ABSENCE))
+                        .code(CR.get(DefaultRightService.Code.ENTITY_BY_VALUE_ABSENCE))
                         .args(expectedValue)
                         .back()
                         .compare()
@@ -121,11 +121,11 @@ class RightServiceImplTest {
 
         ObjectId expectedId = new ObjectId();
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setId(expectedId);
         entity.setValue(expectedValue);
 
-        RightServiceImpl service = new RightServiceImpl(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        DefaultRightService service = new DefaultRightService(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
         Result<Right> result = service.getOneByValue(expectedValue);
 
         assertThat(
@@ -152,9 +152,9 @@ class RightServiceImplTest {
         };
 
         String expectedValue = Faker.str_().random();
-        Right right = RightImpl.create(expectedValue);
+        Right right = DefaultRight.create(expectedValue);
 
-        RightServiceImpl service = new RightServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        DefaultRightService service = new DefaultRightService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
         Result<Right> result = service.save(right);
 
         assertThat(
@@ -162,7 +162,7 @@ class RightServiceImplTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(RightServiceImpl.Code.FAIL_SAVING))
+                        .code(CR.get(DefaultRightService.Code.FAIL_SAVING))
                         .back()
                         .compare()
         ).isTrue();
@@ -180,12 +180,12 @@ class RightServiceImplTest {
         ObjectId expectedId = new ObjectId();
         String expectedValue = Faker.str_().random();
 
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setId(expectedId);
         entity.setValue(expectedValue);
 
-        RightServiceImpl service = new RightServiceImpl(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
-        Result<Right> result = service.save(RightImpl.create(expectedValue));
+        DefaultRightService service = new DefaultRightService(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        Result<Right> result = service.save(DefaultRight.create(expectedValue));
 
         assertThat(
                 Results.comparator(result)
@@ -213,7 +213,7 @@ class RightServiceImplTest {
         };
 
         ObjectId expectedId = new ObjectId();
-        RightServiceImpl service = new RightServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        DefaultRightService service = new DefaultRightService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
         Result<Right> result = service.deleteById(expectedId);
 
         assertThat(
@@ -236,7 +236,7 @@ class RightServiceImplTest {
             return repo;
         };
 
-        RightServiceImpl service = new RightServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        DefaultRightService service = new DefaultRightService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
         Result<Right> result = service.deleteByValue(Faker.str_().random());
 
         assertThat(
@@ -262,11 +262,11 @@ class RightServiceImplTest {
         ObjectId expectedId = new ObjectId();
         String expectedValue = Faker.str_().random();
 
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setId(expectedId);
         entity.setValue(expectedValue);
 
-        RightServiceImpl service = new RightServiceImpl(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
+        DefaultRightService service = new DefaultRightService(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_RIGHT_CONVERTER);
         Result<Right> result = service.deleteByValue(Faker.str_().random());
 
         assertThat(

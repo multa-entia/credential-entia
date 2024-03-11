@@ -9,13 +9,13 @@ import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UsrEntityImplTest {
+class DefaultUsrEntityTest {
 
     @SneakyThrows
     @RepeatedTest(100)
     void shouldCheckIdSetting() {
         ObjectId expectedId = new ObjectId();
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setId(expectedId);
 
         Field field = entity.getClass().getDeclaredField("id");
@@ -28,7 +28,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckIdGetting() {
         ObjectId expectedId = new ObjectId();
-        UsrEntityImpl entity = new UsrEntityImpl(expectedId, null, null, null, null);
+        DefaultUsrEntity entity = new DefaultUsrEntity(expectedId, null, null, null, null);
 
         assertThat(entity.getId()).isEqualTo(expectedId);
     }
@@ -37,7 +37,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckFirstNameSetting() {
         String expectedFirstName = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setFirstName(expectedFirstName);
 
         Field field = entity.getClass().getDeclaredField("firstName");
@@ -50,7 +50,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckFirstNameGetting() {
         String expectedFirstName = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl(null, expectedFirstName, null, null, null);
+        DefaultUsrEntity entity = new DefaultUsrEntity(null, expectedFirstName, null, null, null);
 
         assertThat(entity.getFirstName()).isEqualTo(expectedFirstName);
     }
@@ -59,7 +59,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckPaterNameSetting() {
         String expectedPaterName = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setPaterName(expectedPaterName);
 
         Field field = entity.getClass().getDeclaredField("paterName");
@@ -72,7 +72,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckPaterNameGetting() {
         String expectedPaterName = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl(null, null, expectedPaterName, null, null);
+        DefaultUsrEntity entity = new DefaultUsrEntity(null, null, expectedPaterName, null, null);
 
         assertThat(entity.getPaterName()).isEqualTo(expectedPaterName);
     }
@@ -81,7 +81,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckSurnameSetting() {
         String expectedSurname = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setSurname(expectedSurname);
 
         Field field = entity.getClass().getDeclaredField("surname");
@@ -94,7 +94,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckSurnameGetting() {
         String expectedSurname = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl(null, null, null, expectedSurname, null);
+        DefaultUsrEntity entity = new DefaultUsrEntity(null, null, null, expectedSurname, null);
 
         assertThat(entity.getSurname()).isEqualTo(expectedSurname);
     }
@@ -103,7 +103,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckEmailSetting() {
         String expectedEmail = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setEmail(expectedEmail);
 
         Field field = entity.getClass().getDeclaredField("email");
@@ -116,7 +116,7 @@ class UsrEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckEmailGetting() {
         String expectedEmail = Faker.str_().random();
-        UsrEntityImpl entity = new UsrEntityImpl(null, null, null, null, expectedEmail);
+        DefaultUsrEntity entity = new DefaultUsrEntity(null, null, null, null, expectedEmail);
 
         assertThat(entity.getEmail()).isEqualTo(expectedEmail);
     }

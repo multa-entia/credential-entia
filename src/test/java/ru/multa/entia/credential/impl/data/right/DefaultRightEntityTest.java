@@ -9,13 +9,13 @@ import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RightEntityImplTest {
+class DefaultRightEntityTest {
 
     @SneakyThrows
     @RepeatedTest(100)
     void shouldCheckIdSetting() {
         ObjectId expectedId = new ObjectId();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setId(expectedId);
 
         Field field = entity.getClass().getDeclaredField("id");
@@ -28,7 +28,7 @@ class RightEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckIdGetting() {
         ObjectId expectedId = new ObjectId();
-        RightEntityImpl entity = new RightEntityImpl(expectedId, null);
+        DefaultRightEntity entity = new DefaultRightEntity(expectedId, null);
 
         assertThat(entity.getId()).isEqualTo(expectedId);
     }
@@ -37,7 +37,7 @@ class RightEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckValueSetting() {
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl();
+        DefaultRightEntity entity = new DefaultRightEntity();
         entity.setValue(expectedValue);
 
         Field field = entity.getClass().getDeclaredField("value");
@@ -50,7 +50,7 @@ class RightEntityImplTest {
     @RepeatedTest(100)
     void shouldCheckValueGetting() {
         String expectedValue = Faker.str_().random();
-        RightEntityImpl entity = new RightEntityImpl(null, expectedValue);
+        DefaultRightEntity entity = new DefaultRightEntity(null, expectedValue);
 
         assertThat(entity.getValue()).isEqualTo(expectedValue);
     }

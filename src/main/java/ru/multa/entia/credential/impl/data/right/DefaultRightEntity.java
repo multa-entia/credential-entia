@@ -7,19 +7,18 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import ru.multa.entia.credential.api.data.right.RightEntity;
 
-// TODO: rename to Default...
 @Document
 @Data
-public class RightEntityImpl implements RightEntity {
+public class DefaultRightEntity implements RightEntity {
     @Id
     private ObjectId id;
     @Indexed(unique = true)
     private String value;
 
-    public RightEntityImpl() {
+    public DefaultRightEntity() {
     }
 
-    public RightEntityImpl(final ObjectId id, final String value) {
+    public DefaultRightEntity(final ObjectId id, final String value) {
         this.id = id;
         this.value = value;
     }

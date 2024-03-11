@@ -6,19 +6,18 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import ru.multa.entia.credential.api.data.bridge.BridgeEntity;
 
-// TODO: rename to Default...
 @Document
 @Data
-public class BridgeEntityImpl implements BridgeEntity {
+public class DefaultBridgeEntity implements BridgeEntity {
     @Id
     private ObjectId id;
     private ObjectId userId;
     private ObjectId rightId;
 
-    public BridgeEntityImpl() {
+    public DefaultBridgeEntity() {
     }
 
-    public BridgeEntityImpl(ObjectId id, ObjectId userId, ObjectId rightId) {
+    public DefaultBridgeEntity(ObjectId id, ObjectId userId, ObjectId rightId) {
         this.id = id;
         this.userId = userId;
         this.rightId = rightId;

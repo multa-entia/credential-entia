@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class UsrServiceImplTest {
+class DefaultUsrServiceTest {
 
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
     private static final Function<Usr, UsrEntity> TO_ENTITY_CONVERTER = new DefaultUsr2EntityConverter();
@@ -40,7 +40,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<Usr> result = service.getById(new ObjectId());
 
         assertThat(
@@ -48,7 +48,7 @@ class UsrServiceImplTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(UsrServiceImpl.Code.ENTITY_BY_ID_ABSENCE))
+                        .code(CR.get(DefaultUsrService.Code.ENTITY_BY_ID_ABSENCE))
                         .back()
                         .compare()
         ).isTrue();
@@ -56,7 +56,7 @@ class UsrServiceImplTest {
 
     @Test
     void shouldCheckByIdGetting() {
-        UsrEntityImpl entity = new UsrEntityImpl(
+        DefaultUsrEntity entity = new DefaultUsrEntity(
                 new ObjectId(),
                 Faker.str_().random(),
                 Faker.str_().random(),
@@ -71,7 +71,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<Usr> result = service.getById(new ObjectId());
 
         assertThat(
@@ -94,7 +94,7 @@ class UsrServiceImplTest {
     @Test
     void shouldCheckSaving() {
         ObjectId expectedId = new ObjectId();
-        UsrImpl expectedUsr = new UsrImpl(
+        DefaultUsr expectedUsr = new DefaultUsr(
                 null,
                 Faker.str_().random(),
                 Faker.str_().random(),
@@ -102,7 +102,7 @@ class UsrServiceImplTest {
                 Faker.str_().random()
         );
 
-        UsrEntityImpl entity = new UsrEntityImpl(
+        DefaultUsrEntity entity = new DefaultUsrEntity(
                 null,
                 expectedUsr.firstName(),
                 expectedUsr.paterName(),
@@ -118,7 +118,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoFunction.apply(entity), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<Usr> result = service.save(expectedUsr);
 
         assertThat(
@@ -140,7 +140,7 @@ class UsrServiceImplTest {
 
     @Test
     void shouldCheckSaving_idFail() {
-        UsrImpl expectedUsr = new UsrImpl(
+        DefaultUsr expectedUsr = new DefaultUsr(
                 null,
                 Faker.str_().random(),
                 Faker.str_().random(),
@@ -155,7 +155,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<Usr> result = service.save(expectedUsr);
 
         assertThat(
@@ -163,7 +163,7 @@ class UsrServiceImplTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(UsrServiceImpl.Code.FAIL_SAVING))
+                        .code(CR.get(DefaultUsrService.Code.FAIL_SAVING))
                         .back()
                         .compare()
         ).isTrue();
@@ -178,7 +178,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<List<Usr>> result = service.getByFirstName(Faker.str_().random());
 
         assertThat(
@@ -186,7 +186,7 @@ class UsrServiceImplTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(UsrServiceImpl.Code.ENTITIES_BY_FIRST_NAME_ABSENCE))
+                        .code(CR.get(DefaultUsrService.Code.ENTITIES_BY_FIRST_NAME_ABSENCE))
                         .back()
                         .compare()
         ).isTrue();
@@ -194,7 +194,7 @@ class UsrServiceImplTest {
 
     @Test
     void shouldCheckByFirstNameGetting() {
-        UsrImpl expectedUsr = new UsrImpl(
+        DefaultUsr expectedUsr = new DefaultUsr(
                 new ObjectId(),
                 Faker.str_().random(),
                 Faker.str_().random(),
@@ -202,7 +202,7 @@ class UsrServiceImplTest {
                 Faker.str_().random()
         );
 
-        UsrEntityImpl expectedEntity = new UsrEntityImpl(
+        DefaultUsrEntity expectedEntity = new DefaultUsrEntity(
                 expectedUsr.id(),
                 expectedUsr.firstName(),
                 expectedUsr.paterName(),
@@ -217,7 +217,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<List<Usr>> result = service.getByFirstName(Faker.str_().random());
 
         assertThat(
@@ -243,7 +243,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<List<Usr>> result = service.getByPaterName(Faker.str_().random());
 
         assertThat(
@@ -251,7 +251,7 @@ class UsrServiceImplTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(UsrServiceImpl.Code.ENTITIES_BY_PATER_NAME_ABSENCE))
+                        .code(CR.get(DefaultUsrService.Code.ENTITIES_BY_PATER_NAME_ABSENCE))
                         .back()
                         .compare()
         ).isTrue();
@@ -260,7 +260,7 @@ class UsrServiceImplTest {
 
     @Test
     void shouldCheckByPaterNameGetting() {
-        UsrImpl expectedUsr = new UsrImpl(
+        DefaultUsr expectedUsr = new DefaultUsr(
                 new ObjectId(),
                 Faker.str_().random(),
                 Faker.str_().random(),
@@ -268,7 +268,7 @@ class UsrServiceImplTest {
                 Faker.str_().random()
         );
 
-        UsrEntityImpl expectedEntity = new UsrEntityImpl(
+        DefaultUsrEntity expectedEntity = new DefaultUsrEntity(
                 expectedUsr.id(),
                 expectedUsr.firstName(),
                 expectedUsr.paterName(),
@@ -283,7 +283,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<List<Usr>> result = service.getByPaterName(Faker.str_().random());
 
         assertThat(
@@ -309,7 +309,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<List<Usr>> result = service.getBySurname(Faker.str_().random());
 
         assertThat(
@@ -317,7 +317,7 @@ class UsrServiceImplTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(UsrServiceImpl.Code.ENTITIES_BY_SURNAME_ABSENCE))
+                        .code(CR.get(DefaultUsrService.Code.ENTITIES_BY_SURNAME_ABSENCE))
                         .back()
                         .compare()
         ).isTrue();
@@ -326,7 +326,7 @@ class UsrServiceImplTest {
 
     @Test
     void shouldCheckBySurnameGetting() {
-        UsrImpl expectedUsr = new UsrImpl(
+        DefaultUsr expectedUsr = new DefaultUsr(
                 new ObjectId(),
                 Faker.str_().random(),
                 Faker.str_().random(),
@@ -334,7 +334,7 @@ class UsrServiceImplTest {
                 Faker.str_().random()
         );
 
-        UsrEntityImpl expectedEntity = new UsrEntityImpl(
+        DefaultUsrEntity expectedEntity = new DefaultUsrEntity(
                 expectedUsr.id(),
                 expectedUsr.firstName(),
                 expectedUsr.paterName(),
@@ -349,7 +349,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<List<Usr>> result = service.getBySurname(Faker.str_().random());
 
         assertThat(
@@ -375,7 +375,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<List<Usr>> result = service.getByEmail(Faker.str_().random());
 
         assertThat(
@@ -383,7 +383,7 @@ class UsrServiceImplTest {
                         .isFail()
                         .value(null)
                         .seedsComparator()
-                        .code(CR.get(UsrServiceImpl.Code.ENTITIES_BY_EMAIL_ABSENCE))
+                        .code(CR.get(DefaultUsrService.Code.ENTITIES_BY_EMAIL_ABSENCE))
                         .back()
                         .compare()
         ).isTrue();
@@ -391,7 +391,7 @@ class UsrServiceImplTest {
 
     @Test
     void shouldCheckByEmailGetting() {
-        UsrImpl expectedUsr = new UsrImpl(
+        DefaultUsr expectedUsr = new DefaultUsr(
                 new ObjectId(),
                 Faker.str_().random(),
                 Faker.str_().random(),
@@ -399,7 +399,7 @@ class UsrServiceImplTest {
                 Faker.str_().random()
         );
 
-        UsrEntityImpl expectedEntity = new UsrEntityImpl(
+        DefaultUsrEntity expectedEntity = new DefaultUsrEntity(
                 expectedUsr.id(),
                 expectedUsr.firstName(),
                 expectedUsr.paterName(),
@@ -414,7 +414,7 @@ class UsrServiceImplTest {
             return repo;
         };
 
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         Result<List<Usr>> result = service.getByEmail(Faker.str_().random());
 
         assertThat(
@@ -451,7 +451,7 @@ class UsrServiceImplTest {
         };
 
         ObjectId expectedId = new ObjectId();
-        UsrServiceImpl service = new UsrServiceImpl(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
+        DefaultUsrService service = new DefaultUsrService(repoSupplier.get(), TO_ENTITY_CONVERTER, TO_USR_CONVERTER);
         service.deleteById(expectedId);
 
         assertThat(holder.get()).isEqualTo(expectedId);

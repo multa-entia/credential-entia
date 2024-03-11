@@ -6,12 +6,12 @@ import ru.multa.entia.fakers.impl.Faker;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RightImplTest {
+class DefaultRightTest {
 
     @RepeatedTest(100)
     void shouldCheckObjectIdGetting() {
         ObjectId expectedId = new ObjectId();
-        RightImpl right = new RightImpl(expectedId, null);
+        DefaultRight right = new DefaultRight(expectedId, null);
 
         assertThat(right.id()).isEqualTo(expectedId);
     }
@@ -19,7 +19,7 @@ class RightImplTest {
     @RepeatedTest(100)
     void shouldCheckValueGetting() {
         String expectedValue = Faker.str_().random();
-        RightImpl right = new RightImpl(null, expectedValue);
+        DefaultRight right = new DefaultRight(null, expectedValue);
 
         assertThat(right.value()).isEqualTo(expectedValue);
     }

@@ -6,12 +6,12 @@ import ru.multa.entia.credential.api.data.bridge.Bridge;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BridgeImplTest {
+class DefaultBridgeTest {
 
     @Test
     void shouldCheckIdGetting() {
         ObjectId expectedId = new ObjectId();
-        BridgeImpl bridge = new BridgeImpl(expectedId, null, null);
+        DefaultBridge bridge = new DefaultBridge(expectedId, null, null);
 
         assertThat(bridge.id()).isEqualTo(expectedId);
     }
@@ -19,7 +19,7 @@ class BridgeImplTest {
     @Test
     void shouldCheckUserIdGetting() {
         ObjectId expectedUserId = new ObjectId();
-        BridgeImpl bridge = new BridgeImpl(null, expectedUserId, null);
+        DefaultBridge bridge = new DefaultBridge(null, expectedUserId, null);
 
         assertThat(bridge.userId()).isEqualTo(expectedUserId);
     }
@@ -27,7 +27,7 @@ class BridgeImplTest {
     @Test
     void shouldCheckRightGetting() {
         ObjectId expectedRightId = new ObjectId();
-        BridgeImpl bridge = new BridgeImpl(null, null, expectedRightId);
+        DefaultBridge bridge = new DefaultBridge(null, null, expectedRightId);
 
         assertThat(bridge.rightId()).isEqualTo(expectedRightId);
     }
@@ -36,8 +36,8 @@ class BridgeImplTest {
     void shouldCheckCreation() {
         ObjectId expectedUserId = new ObjectId();
         ObjectId expectedRightId = new ObjectId();
-        Bridge bridge = BridgeImpl.create(expectedUserId, expectedRightId);
+        Bridge bridge = DefaultBridge.create(expectedUserId, expectedRightId);
 
-        assertThat(bridge).isEqualTo(new BridgeImpl(null, expectedUserId, expectedRightId));
+        assertThat(bridge).isEqualTo(new DefaultBridge(null, expectedUserId, expectedRightId));
     }
 }

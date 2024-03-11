@@ -3,7 +3,7 @@ package ru.multa.entia.credential.impl.converter.bridge;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import ru.multa.entia.credential.api.data.bridge.Bridge;
-import ru.multa.entia.credential.impl.data.bridge.BridgeEntityImpl;
+import ru.multa.entia.credential.impl.data.bridge.DefaultBridgeEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +15,7 @@ class DefaultEntity2BridgeConverterTest {
         ObjectId expectedUserId = new ObjectId();
         ObjectId expectedRightId = new ObjectId();
         DefaultEntity2BridgeConverter converter = new DefaultEntity2BridgeConverter();
-        Bridge bridge = converter.apply(new BridgeEntityImpl(expectedId, expectedUserId, expectedRightId));
+        Bridge bridge = converter.apply(new DefaultBridgeEntity(expectedId, expectedUserId, expectedRightId));
 
         assertThat(bridge.id()).isEqualTo(expectedId);
         assertThat(bridge.userId()).isEqualTo(expectedUserId);

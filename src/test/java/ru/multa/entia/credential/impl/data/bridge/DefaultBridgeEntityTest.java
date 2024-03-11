@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BridgeEntityImplTest {
+class DefaultBridgeEntityTest {
 
     @Test
     void shouldCheckIdGetting() {
         ObjectId expectedId = new ObjectId();
-        BridgeEntityImpl entity = new BridgeEntityImpl(expectedId, null, null);
+        DefaultBridgeEntity entity = new DefaultBridgeEntity(expectedId, null, null);
 
         assertThat(entity.getId()).isEqualTo(expectedId);
     }
@@ -18,7 +18,7 @@ class BridgeEntityImplTest {
     @Test
     void shouldCheckIdSettingGetting() {
         ObjectId expectedId = new ObjectId();
-        BridgeEntityImpl entity = new BridgeEntityImpl();
+        DefaultBridgeEntity entity = new DefaultBridgeEntity();
         entity.setId(expectedId);
 
         assertThat(entity.getId()).isEqualTo(expectedId);
@@ -27,7 +27,7 @@ class BridgeEntityImplTest {
     @Test
     void shouldCheckUserIdGetting() {
         ObjectId expectedUserId = new ObjectId();
-        BridgeEntityImpl entity = new BridgeEntityImpl(null, expectedUserId, null);
+        DefaultBridgeEntity entity = new DefaultBridgeEntity(null, expectedUserId, null);
 
         assertThat(entity.getUserId()).isEqualTo(expectedUserId);
     }
@@ -35,7 +35,7 @@ class BridgeEntityImplTest {
     @Test
     void shouldCheckUserIdSetting() {
         ObjectId expectedUserId = new ObjectId();
-        BridgeEntityImpl entity = new BridgeEntityImpl();
+        DefaultBridgeEntity entity = new DefaultBridgeEntity();
         entity.setUserId(expectedUserId);
 
         assertThat(entity.getUserId()).isEqualTo(expectedUserId);
@@ -44,7 +44,7 @@ class BridgeEntityImplTest {
     @Test
     void shouldCheckRightIdGetting() {
         ObjectId expectedRightId = new ObjectId();
-        BridgeEntityImpl entity = new BridgeEntityImpl(null, null, expectedRightId);
+        DefaultBridgeEntity entity = new DefaultBridgeEntity(null, null, expectedRightId);
 
         assertThat(entity.getRightId()).isEqualTo(expectedRightId);
     }
@@ -52,7 +52,7 @@ class BridgeEntityImplTest {
     @Test
     void shouldCheckRightIdSetting() {
         ObjectId expectedRightId = new ObjectId();
-        BridgeEntityImpl entity = new BridgeEntityImpl();
+        DefaultBridgeEntity entity = new DefaultBridgeEntity();
         entity.setRightId(expectedRightId);
 
         assertThat(entity.getRightId()).isEqualTo(expectedRightId);

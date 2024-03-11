@@ -3,7 +3,7 @@ package ru.multa.entia.credential.impl.converter.usr;
 import org.springframework.stereotype.Component;
 import ru.multa.entia.credential.api.data.usr.Usr;
 import ru.multa.entia.credential.api.data.usr.UsrEntity;
-import ru.multa.entia.credential.impl.data.usr.UsrImpl;
+import ru.multa.entia.credential.impl.data.usr.DefaultUsr;
 
 import java.util.function.Function;
 
@@ -11,7 +11,7 @@ import java.util.function.Function;
 public class DefaultEntity2UsrConverter implements Function<UsrEntity, Usr> {
     @Override
     public Usr apply(final UsrEntity usrEntity) {
-        return new UsrImpl(
+        return new DefaultUsr(
                 usrEntity.getId(),
                 usrEntity.getFirstName(),
                 usrEntity.getPaterName(),

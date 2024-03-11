@@ -7,12 +7,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UsrImplTest {
+class DefaultUsrTest {
 
     @Test
     void shouldCheckIdGetting() {
         ObjectId expectedId = new ObjectId();
-        UsrImpl usr = new UsrImpl(expectedId, null, null, null, null);
+        DefaultUsr usr = new DefaultUsr(expectedId, null, null, null, null);
 
         assertThat(usr.id()).isEqualTo(expectedId);
     }
@@ -23,7 +23,7 @@ class UsrImplTest {
             "null,''"
     }, nullValues = "null")
     void shouldCheckFirstNameSettingGetting(String initValue, String expected) {
-        UsrImpl usr = new UsrImpl(new ObjectId(), initValue, null, null, null);
+        DefaultUsr usr = new DefaultUsr(new ObjectId(), initValue, null, null, null);
 
         assertThat(usr.firstName()).isEqualTo(expected);
     }
@@ -34,7 +34,7 @@ class UsrImplTest {
             "null,''"
     }, nullValues = "null")
     void shouldCheckPaterNameGetting(String initValue, String expected) {
-        UsrImpl usr = new UsrImpl(new ObjectId(), null, initValue, null, null);
+        DefaultUsr usr = new DefaultUsr(new ObjectId(), null, initValue, null, null);
 
         assertThat(usr.paterName()).isEqualTo(expected);
     }
@@ -45,7 +45,7 @@ class UsrImplTest {
             "null,''"
     }, nullValues = "null")
     void shouldCheckSurnameGetting(String initValue, String expected) {
-        UsrImpl usr = new UsrImpl(new ObjectId(), null, null, initValue, null);
+        DefaultUsr usr = new DefaultUsr(new ObjectId(), null, null, initValue, null);
 
         assertThat(usr.surname()).isEqualTo(expected);
     }
@@ -56,7 +56,7 @@ class UsrImplTest {
             "null,''"
     }, nullValues = "null")
     void shouldCheckEmailGetting(String initValue, String expected) {
-        UsrImpl usr = new UsrImpl(new ObjectId(), null, null, null, initValue);
+        DefaultUsr usr = new DefaultUsr(new ObjectId(), null, null, null, initValue);
 
         assertThat(usr.email()).isEqualTo(expected);
     }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import ru.multa.entia.credential.impl.data.usr.UsrEntityImpl;
+import ru.multa.entia.credential.impl.data.usr.DefaultUsrEntity;
 import ru.multa.entia.fakers.impl.Faker;
 
 import java.util.List;
@@ -32,13 +32,13 @@ class UsrRepoTest {
         String expectedSurname = Faker.str_().random();
         String expectedEmail = Faker.str_().random();
 
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setFirstName(expectedFirstName);
         entity.setPaterName(expectedPaterName);
         entity.setSurname(expectedSurname);
         entity.setEmail(expectedEmail);
 
-        UsrEntityImpl saved = repo.save(entity);
+        DefaultUsrEntity saved = repo.save(entity);
 
         assertThat(saved.getId()).isNotNull();
 
@@ -67,13 +67,13 @@ class UsrRepoTest {
         String expectedSurname = Faker.str_().random();
         String expectedEmail = Faker.str_().random();
 
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setFirstName(expectedFirstName);
         entity.setPaterName(expectedPaterName);
         entity.setSurname(expectedSurname);
         entity.setEmail(expectedEmail);
 
-        UsrEntityImpl saved = repo.save(entity);
+        DefaultUsrEntity saved = repo.save(entity);
 
         List<UsrEntity> gottenEntities = repo.findByFirstName(expectedFirstName);
         assertThat(gottenEntities).hasSize(1);
@@ -101,13 +101,13 @@ class UsrRepoTest {
         String expectedSurname = Faker.str_().random();
         String expectedEmail = Faker.str_().random();
 
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setFirstName(expectedFirstName);
         entity.setPaterName(expectedPaterName);
         entity.setSurname(expectedSurname);
         entity.setEmail(expectedEmail);
 
-        UsrEntityImpl saved = repo.save(entity);
+        DefaultUsrEntity saved = repo.save(entity);
 
         List<UsrEntity> gottenEntities = repo.findByPaterName(expectedPaterName);
         assertThat(gottenEntities).hasSize(1);
@@ -135,13 +135,13 @@ class UsrRepoTest {
         String expectedSurname = Faker.str_().random();
         String expectedEmail = Faker.str_().random();
 
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setFirstName(expectedFirstName);
         entity.setPaterName(expectedPaterName);
         entity.setSurname(expectedSurname);
         entity.setEmail(expectedEmail);
 
-        UsrEntityImpl saved = repo.save(entity);
+        DefaultUsrEntity saved = repo.save(entity);
 
         List<UsrEntity> gottenEntities = repo.findBySurname(expectedSurname);
         assertThat(gottenEntities).hasSize(1);
@@ -169,13 +169,13 @@ class UsrRepoTest {
         String expectedSurname = Faker.str_().random();
         String expectedEmail = Faker.str_().random();
 
-        UsrEntityImpl entity = new UsrEntityImpl();
+        DefaultUsrEntity entity = new DefaultUsrEntity();
         entity.setFirstName(expectedFirstName);
         entity.setPaterName(expectedPaterName);
         entity.setSurname(expectedSurname);
         entity.setEmail(expectedEmail);
 
-        UsrEntityImpl saved = repo.save(entity);
+        DefaultUsrEntity saved = repo.save(entity);
 
         List<UsrEntity> gottenEntities = repo.findByEmail(expectedEmail);
         assertThat(gottenEntities).hasSize(1);
