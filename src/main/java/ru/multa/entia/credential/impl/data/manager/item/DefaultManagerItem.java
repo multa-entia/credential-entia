@@ -4,9 +4,12 @@ import ru.multa.entia.credential.api.data.manager.item.ManagerItem;
 import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
 import ru.multa.entia.results.impl.repository.DefaultCodeRepository;
+import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DefaultManagerItem implements ManagerItem {
     public enum Code {
@@ -27,13 +30,24 @@ public class DefaultManagerItem implements ManagerItem {
     }
 
     private DefaultManagerItem(final Map<String, Object> data) {
-        this.data = data;
+        this.data = Collections.unmodifiableMap(data);
     }
 
     @Override
     public <T> Result<T> get(final String property, final Class<T> type) {
-        // TODO: !!!
-        throw new RuntimeException("");
+        AtomicReference<T> holder = new AtomicReference<>();
+        return DefaultResultBuilder.<T>computeFromCodes(
+                holder::get,
+                () -> {return !data.containsKey(property) ? CR.get(Code.PROPERTY_IS_ABSENCE) : null;},
+                () -> {
+                    Object gotten = data.get(property);
+                    if (!gotten.getClass().equals(type)) {
+                        return CR.get(Code.PROPERTY_HAS_BAD_TYPE);
+                    }
+                    holder.set(type.cast(gotten));
+                    return null;
+                }
+        );
     }
 
     public static class Builder {
