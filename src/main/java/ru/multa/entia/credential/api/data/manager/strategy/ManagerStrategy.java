@@ -1,6 +1,12 @@
 package ru.multa.entia.credential.api.data.manager.strategy;
 
+import ru.multa.entia.credential.api.data.manager.item.ManagerItem;
+import ru.multa.entia.results.api.result.Result;
+
+// TODO: ???
 public interface ManagerStrategy {
+    Result<ManagerItem> execute(ManagerItem item);
+
     /*
     Result<Usr> getById(ObjectId id);
     Result<Usr> save(Usr user);
