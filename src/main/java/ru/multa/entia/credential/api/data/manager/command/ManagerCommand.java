@@ -1,11 +1,8 @@
-package ru.multa.entia.credential.api.data.manager.strategy;
+package ru.multa.entia.credential.api.data.manager.command;
 
-import ru.multa.entia.credential.api.data.manager.item.ManagerItem;
-import ru.multa.entia.results.api.result.Result;
-
-// TODO: ???
-public interface ManagerStrategy {
-    Result<ManagerItem> execute(ManagerItem item);
+// TODO: ??? rename to ...command
+public interface ManagerCommand {
+    void execute();
 
     /*
     Result<Usr> getById(ObjectId id);

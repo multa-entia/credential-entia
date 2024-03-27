@@ -2,7 +2,10 @@ package ru.multa.entia.credential.impl.data.manager;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import ru.multa.entia.credential.api.data.manager.strategy.ManagerStrategy;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import ru.multa.entia.credential.api.data.manager.command.ManagerCommand;
 import ru.multa.entia.fakers.impl.Faker;
 import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
@@ -13,6 +16,7 @@ import java.lang.reflect.Field;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,7 +32,7 @@ class DefaultManagerTest {
 
         Field field = manager.getClass().getDeclaredField("queue");
         field.setAccessible(true);
-        BlockingQueue<ManagerStrategy> gottenQueue = (BlockingQueue<ManagerStrategy>) field.get(manager);
+        BlockingQueue<ManagerCommand> gottenQueue = (BlockingQueue<ManagerCommand>) field.get(manager);
 
         assertThat(gottenQueue.size() + gottenQueue.remainingCapacity()).isEqualTo(10_000);
     }
@@ -37,13 +41,13 @@ class DefaultManagerTest {
     @SneakyThrows
     @Test
     void shouldCheckCreation_ifQueueNotNull() {
-        ArrayBlockingQueue<ManagerStrategy> expectedQueue = new ArrayBlockingQueue<>(10);
+        ArrayBlockingQueue<ManagerCommand> expectedQueue = new ArrayBlockingQueue<>(10);
 
         DefaultManager manager = new DefaultManager(expectedQueue, null);
 
         Field field = manager.getClass().getDeclaredField("queue");
         field.setAccessible(true);
-        BlockingQueue<ManagerStrategy> gottenQueue = (BlockingQueue<ManagerStrategy>) field.get(manager);
+        BlockingQueue<ManagerCommand> gottenQueue = (BlockingQueue<ManagerCommand>) field.get(manager);
 
         assertThat(gottenQueue).isEqualTo(expectedQueue);
     }
@@ -176,5 +180,98 @@ class DefaultManagerTest {
 
         assertThat(gottenAlive.get()).isFalse();
         assertThat(gottenES).isNull();
+    }
+
+    @Test
+    void shouldCheckOffer_ifNotStarted() {
+        Supplier<ManagerCommand> supplier = () -> {
+            return Mockito.mock(ManagerCommand.class);
+        };
+
+        DefaultManager manager = new DefaultManager(null, null);
+        Result<Object> result = manager.offer(supplier.get());
+
+        assertThat(
+                Results.comparator(result)
+                        .isFail()
+                        .value(null)
+                        .seedsComparator()
+                        .code(CR.get(DefaultManager.Code.OFFER_IF_NOT_STARTED))
+                        .back()
+                        .compare()
+        ).isTrue();
+    }
+
+    @Test
+    void shouldCheckOffer_ifFull() {
+        Supplier<ManagerCommand> supplier = () -> {
+            ManagerCommand command = Mockito.mock(ManagerCommand.class);
+            Mockito
+                    .doAnswer(new Answer<Void>() {
+                        @Override
+                        public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
+                            Thread.sleep(50);
+                            return null;
+                        }
+                    })
+                    .when(command)
+                    .execute();
+
+            return command;
+        };
+
+        DefaultManager manager = new DefaultManager(new ArrayBlockingQueue<>(1), null);
+        manager.start();
+        manager.offer(supplier.get());
+        manager.offer(supplier.get());
+        Result<Object> result = manager.offer(supplier.get());
+
+        assertThat(
+                Results.comparator(result)
+                        .isFail()
+                        .value(null)
+                        .seedsComparator()
+                        .code(CR.get(DefaultManager.Code.OFFER_QUEUE_IS_FULL))
+                        .back()
+                        .compare()
+        ).isTrue();
+    }
+
+    @Test
+    void shouldCheckOffer() {
+        Supplier<ManagerCommand> supplier = () -> {return Mockito.mock(ManagerCommand.class);};
+
+        DefaultManager manager = new DefaultManager(null, null);
+        manager.start();
+        Result<Object> result = manager.offer(supplier.get());
+
+        assertThat(
+                Results.comparator(result)
+                        .isSuccess()
+                        .value(null)
+                        .seedsComparator()
+                        .isNull()
+                        .back()
+                        .compare()
+        ).isTrue();
+    }
+
+    @SneakyThrows
+    @Test
+    void shouldCheckExecution() {
+        AtomicBoolean holder = new AtomicBoolean();
+        ManagerCommand command = new ManagerCommand() {
+            @Override
+            public void execute() {
+                holder.set(true);
+            }
+        };
+
+        DefaultManager manager = new DefaultManager(null, null);
+        manager.start();
+        manager.offer(command);
+        Thread.sleep(10);
+
+        assertThat(holder.get()).isTrue();
     }
 }

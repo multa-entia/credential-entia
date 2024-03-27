@@ -2,7 +2,7 @@ package ru.multa.entia.credential.impl.data.manager;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.multa.entia.credential.api.data.manager.Manager;
-import ru.multa.entia.credential.api.data.manager.strategy.ManagerStrategy;
+import ru.multa.entia.credential.api.data.manager.command.ManagerCommand;
 import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
 import ru.multa.entia.results.impl.repository.DefaultCodeRepository;
@@ -44,13 +44,13 @@ public class DefaultManager implements Manager {
         return thread;
     });
 
-    private final BlockingQueue<ManagerStrategy> queue;
+    private final BlockingQueue<ManagerCommand> queue;
     private final ThreadParams threadParams;
     private final AtomicBoolean alive = new AtomicBoolean(false);
 
     private ExecutorService es;
 
-    public DefaultManager(final BlockingQueue<ManagerStrategy> queue, final ThreadParams threadParams) {
+    public DefaultManager(final BlockingQueue<ManagerCommand> queue, final ThreadParams threadParams) {
         this.queue = Objects.requireNonNullElse(queue, new ArrayBlockingQueue<>(DEFAULT_QUEUE_SIZE));
         this.threadParams = Objects.requireNonNullElse(threadParams, new ThreadParams());
     }
@@ -84,24 +84,33 @@ public class DefaultManager implements Manager {
     }
 
     @Override
-    public Result<Object> offer(ManagerStrategy strategy) {
-        // TODO: impl
-        return null;
+    public Result<Object> offer(ManagerCommand command) {
+        log.info("The attempt of offer: {}", command);
+        return DefaultResultBuilder.<Object>computeFromCodes(
+                () -> {return null;},
+                () -> {
+                    Code code = Code.OFFER_IF_NOT_STARTED;
+                    if (alive.get()) {
+                        code = queue.offer(command) ? null : Code.OFFER_QUEUE_IS_FULL;
+                    }
+
+                    return code != null ? CR.get(code) : null;
+                }
+        );
     }
 
     private void processES(){
-//        log.info("Box processing started");
-//
-//        while (alive.get()) {
-//            try {
-//                PipelineBox<TASK> box = queue.take();
-//                receiver.receive(sessionId, box);
-//            } catch (InterruptedException exception) {
-//                log.error(exception.getMessage(), exception);
-//                Thread.currentThread().interrupt();
-//            }
-//        }
-//        log.info("Box processing finished");
+        log.info("DefaultManager processing is started");
+        while (alive.get()) {
+            try {
+                ManagerCommand command = queue.take();
+                command.execute();
+            } catch (InterruptedException exception) {
+                log.error(exception.getMessage(), exception);
+                Thread.currentThread().interrupt();
+            }
+        }
+        log.info("DefaultManager processing is finished");
     }
 
     public record ThreadParams(String prefix) {
@@ -118,90 +127,3 @@ public class DefaultManager implements Manager {
         }
     }
 }
-
-// TODO: !!!
-//abstract public class AbstractPipeline<T extends ConversationItem, TASK> implements Pipeline<TASK> {
-//    public enum Code {
-//        ALREADY_STARTED,
-//        ALREADY_STOPPED,
-//        OFFER_IF_NOT_STARTED,
-//        OFFER_QUEUE_IS_FULL
-//    }
-//
-//    private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
-//    private static final AtomicInteger threadNameCounter = new AtomicInteger(0);
-//
-//    private static final Function<ThreadParams, ExecutorService> BOX_PROCESSOR_FUNCTION = params -> Executors.newSingleThreadExecutor(r -> {
-//        Thread thread = new Thread(r);
-//        thread.setName(params.prefix() + threadNameCounter.incrementAndGet());
-//
-//        return thread;
-//    });
-//
-//    private final AtomicBoolean alive = new AtomicBoolean(false);
-//    private final BlockingQueue<PipelineBox<TASK>> queue;
-//    private final PipelineReceiver<TASK> receiver;
-//    private final ThreadParams threadParams;
-//
-//    private UUID sessionId;
-//    private ExecutorService boxProcessor;
-//
-//    public AbstractPipeline(final BlockingQueue<PipelineBox<TASK>> queue,
-//                            final PipelineReceiver<TASK> receiver) {
-//        this(queue, receiver, null);
-//    }
-//
-//    public AbstractPipeline(final BlockingQueue<PipelineBox<TASK>> queue,
-//                            final PipelineReceiver<TASK> receiver,
-//                            final ThreadParams threadParams) {
-//        this.queue = queue;
-//        this.receiver = receiver;
-//        this.threadParams = Objects.requireNonNullElse(threadParams, new ThreadParams());
-//    }
-//
-//    @Override
-//    public Result<Object> start() {
-
-//    }
-//
-//    @Override
-//    public Result<Object> stop(boolean clear) {
-//        String code = CR.get(new CodeKey(getClass(), Code.ALREADY_STOPPED));
-//        log.info("The attempt of stopping");
-//        if (alive.compareAndSet(true, false)){
-//            log.info("Stopped");
-//            sessionId = null;
-//            receiver.block();
-//            boxProcessor.shutdown();
-//            boxProcessor = null;
-//            if (clear){
-//                queue.clear();
-//            }
-//            code = null;
-//        }
-//
-//        return DefaultResultBuilder.<Object>compute(null, code);
-//    }
-//
-//    @Override
-//    public Result<TASK> offer(final PipelineBox<TASK> box) {
-//        log.info("The attempt of offer: {}", box.value());
-//
-//        return DefaultResultBuilder.<TASK>computeFromCodes(
-//                box::value,
-//                () -> {
-//                    Code code = Code.OFFER_IF_NOT_STARTED;
-//                    if (alive.get()){
-//                        code = queue.offer(box) ? null : Code.OFFER_QUEUE_IS_FULL;
-//                    }
-//
-//                    return code != null ? CR.get(new CodeKey(getClass(), code)) : null;
-//                }
-//        );
-//    }
-//
-
-//
-
-//
-//    public record CodeKey(Class<?> type, Object key) {}
