@@ -1,9 +1,8 @@
 package ru.multa.entia.credential.api.data.manager.command;
 
-// TODO: ??? rename to ...command
 public interface ManagerCommand {
     void execute();
-
+    // TODO: !!!
     /*
     Result<Usr> getById(ObjectId id);
     Result<Usr> save(Usr user);
