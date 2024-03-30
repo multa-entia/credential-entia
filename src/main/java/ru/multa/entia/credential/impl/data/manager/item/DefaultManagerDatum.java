@@ -50,6 +50,14 @@ public class DefaultManagerDatum implements ManagerDatum {
         );
     }
 
+    // TODO: refact + test
+    @Override
+    public Result<Object> get(final String property) {
+        return data.containsKey(property)
+                ? DefaultResultBuilder.<Object>ok(data.get(property))
+                : DefaultResultBuilder.<Object>fail(CR.get(Code.PROPERTY_IS_ABSENCE));
+    }
+
     public static class Builder {
         private final Map<String, Object> data = new HashMap<>();
 
