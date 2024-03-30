@@ -2,7 +2,7 @@ package ru.multa.entia.credential.impl.data.manager.command;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import ru.multa.entia.credential.api.data.manager.item.ManagerItem;
+import ru.multa.entia.credential.api.data.manager.item.ManagerDatum;
 import ru.multa.entia.fakers.impl.Faker;
 import ru.multa.entia.results.api.result.Result;
 import ru.multa.entia.results.impl.result.DefaultResultBuilder;
@@ -21,8 +21,8 @@ class AbstractManagerCommandTest {
         String expectedValue = Faker.str_().random();
         Result<Object> expectedResult = DefaultResultBuilder.<Object>ok(expectedValue);
 
-        Supplier<ManagerItem> supplier = () -> {
-            ManagerItem item = Mockito.mock(ManagerItem.class);
+        Supplier<ManagerDatum> supplier = () -> {
+            ManagerDatum item = Mockito.mock(ManagerDatum.class);
             Mockito
                     .when(item.get(Mockito.any(), Mockito.any()))
                     .thenReturn(expectedResult);
@@ -30,24 +30,24 @@ class AbstractManagerCommandTest {
             return item;
         };
 
-        AtomicReference<ManagerItem> holder = new AtomicReference<>();
-        Consumer<ManagerItem> consumer = new Consumer<ManagerItem>() {
+        AtomicReference<Result<ManagerDatum>> holder = new AtomicReference<>();
+        Consumer<Result<ManagerDatum>> consumer = new Consumer<Result<ManagerDatum>>() {
             @Override
-            public void accept(ManagerItem item) {
-                holder.set(item);
+            public void accept(Result<ManagerDatum> result) {
+                holder.set(result);
             }
         };
 
         AbstractManagerCommand command = new AbstractManagerCommand(consumer) {
             @Override
-            protected ManagerItem executeService() {
-                return supplier.get();
+            protected Result<ManagerDatum> executeService() {
+                return DefaultResultBuilder.<ManagerDatum>ok(supplier.get());
             }
         };
         command.execute();
 
-        ManagerItem managerItem = holder.get();
-        Result<String> result = managerItem.get("", String.class);
+        ManagerDatum managerDatum = holder.get().value();
+        Result<String> result = managerDatum.get("", String.class);
 
         assertThat(Results.comparator(result)
                 .isSuccess()

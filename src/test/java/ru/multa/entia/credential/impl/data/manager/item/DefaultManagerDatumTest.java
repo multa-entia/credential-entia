@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DefaultManagerItemTest {
+class DefaultManagerDatumTest {
 
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
 
@@ -24,7 +24,7 @@ class DefaultManagerItemTest {
     @Test
     void shouldCheckBuilderPropertySetting() {
         Map<String, Object> expected = new HashMap<>();
-        DefaultManagerItem.Builder builder = new DefaultManagerItem.Builder();
+        DefaultManagerDatum.Builder builder = new DefaultManagerDatum.Builder();
 
         int size = Faker.int_().between(5, 10);
         for (int i = 0; i < size; i++) {
@@ -46,7 +46,7 @@ class DefaultManagerItemTest {
     @Test
     void shouldCheckBuilding() {
         Map<String, Object> expected = new HashMap<>();
-        DefaultManagerItem.Builder builder = new DefaultManagerItem.Builder();
+        DefaultManagerDatum.Builder builder = new DefaultManagerDatum.Builder();
 
         int size = Faker.int_().between(5, 10);
         for (int i = 0; i < size; i++) {
@@ -56,7 +56,7 @@ class DefaultManagerItemTest {
             builder.property(key, value);
         }
 
-        DefaultManagerItem item = builder.build();
+        DefaultManagerDatum item = builder.build();
         Field field = item.getClass().getDeclaredField("data");
         field.setAccessible(true);
         Map<String, Object> gottenMap = (Map<String, Object>) field.get(item);
@@ -66,13 +66,13 @@ class DefaultManagerItemTest {
 
     @Test
     void shouldCheckGetting_ifAbsence() {
-        Result<String> result = DefaultManagerItem.builder().build().get(Faker.str_().random(), String.class);
+        Result<String> result = DefaultManagerDatum.builder().build().get(Faker.str_().random(), String.class);
 
         assertThat(Results.comparator(result)
                 .isFail()
                 .value(null)
                 .seedsComparator()
-                .code(CR.get(DefaultManagerItem.Code.PROPERTY_IS_ABSENCE))
+                .code(CR.get(DefaultManagerDatum.Code.PROPERTY_IS_ABSENCE))
                 .back()
                 .compare()
         ).isTrue();
@@ -83,7 +83,7 @@ class DefaultManagerItemTest {
         String expectedKey = Faker.str_().random();
         String expectedValue = Faker.str_().random();
 
-        Result<Float> result = DefaultManagerItem.builder()
+        Result<Float> result = DefaultManagerDatum.builder()
                 .property(expectedKey, expectedValue)
                 .build()
                 .get(expectedKey, Float.class);
@@ -92,7 +92,7 @@ class DefaultManagerItemTest {
                 .isFail()
                 .value(null)
                 .seedsComparator()
-                .code(CR.get(DefaultManagerItem.Code.PROPERTY_HAS_BAD_TYPE))
+                .code(CR.get(DefaultManagerDatum.Code.PROPERTY_HAS_BAD_TYPE))
                 .back()
                 .compare()
         ).isTrue();
@@ -107,7 +107,7 @@ class DefaultManagerItemTest {
         String expectedObjectIdKey = Faker.str_().random();
         ObjectId expectedObjectIdValue = new ObjectId();
 
-        DefaultManagerItem item = DefaultManagerItem.builder()
+        DefaultManagerDatum item = DefaultManagerDatum.builder()
                 .property(expectedStringKey, expectedStringValue)
                 .property(expectedIntegerKey, expectedIntegerValue)
                 .property(expectedObjectIdKey, expectedObjectIdValue)

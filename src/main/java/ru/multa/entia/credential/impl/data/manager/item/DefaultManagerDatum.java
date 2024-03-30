@@ -1,6 +1,6 @@
 package ru.multa.entia.credential.impl.data.manager.item;
 
-import ru.multa.entia.credential.api.data.manager.item.ManagerItem;
+import ru.multa.entia.credential.api.data.manager.item.ManagerDatum;
 import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
 import ru.multa.entia.results.impl.repository.DefaultCodeRepository;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DefaultManagerItem implements ManagerItem {
+public class DefaultManagerDatum implements ManagerDatum {
     public enum Code {
         PROPERTY_IS_ABSENCE,
         PROPERTY_HAS_BAD_TYPE
@@ -29,7 +29,7 @@ public class DefaultManagerItem implements ManagerItem {
         return new Builder();
     }
 
-    private DefaultManagerItem(final Map<String, Object> data) {
+    private DefaultManagerDatum(final Map<String, Object> data) {
         this.data = Collections.unmodifiableMap(data);
     }
 
@@ -58,8 +58,8 @@ public class DefaultManagerItem implements ManagerItem {
             return this;
         }
 
-        public DefaultManagerItem build() {
-            return new DefaultManagerItem(data);
+        public DefaultManagerDatum build() {
+            return new DefaultManagerDatum(data);
         }
     }
 }
