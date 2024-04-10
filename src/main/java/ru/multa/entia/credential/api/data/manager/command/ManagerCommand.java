@@ -4,7 +4,6 @@ public interface ManagerCommand {
     void execute();
     // TODO: !!!
     /*
-    Result<List<Usr>> getByEmail(String email);
     Result<Usr> deleteById(ObjectId id);
 * */
     /*

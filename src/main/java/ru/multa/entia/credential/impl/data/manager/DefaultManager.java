@@ -84,7 +84,7 @@ public class DefaultManager implements Manager {
     }
 
     @Override
-    public Result<Object> offer(ManagerCommand command) {
+    public Result<Object> offer(final ManagerCommand command) {
         log.info("The attempt of offer: {}", command);
         return DefaultResultBuilder.<Object>computeFromCodes(
                 () -> {return null;},
