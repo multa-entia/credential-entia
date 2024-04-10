@@ -4,8 +4,6 @@ public interface ManagerCommand {
     void execute();
     // TODO: !!!
     /*
-    Result<List<Usr>> getByFirstName(String firstName);
-    Result<List<Usr>> getByPaterName(String paterName);
     Result<List<Usr>> getBySurname(String surname);
     Result<List<Usr>> getByEmail(String email);
     Result<Usr> deleteById(ObjectId id);
