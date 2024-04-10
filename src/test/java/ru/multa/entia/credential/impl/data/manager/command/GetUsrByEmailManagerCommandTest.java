@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class GetUsrByEmailManagerCommandTest {
 
     @Test
-    void shouldCheckFindingByPaterName_ifFail() {
+    void shouldCheckFindingByEmail_ifFail() {
         AtomicBoolean okHolder = new AtomicBoolean(false);
         AtomicReference<String> codeHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
@@ -49,7 +49,7 @@ class GetUsrByEmailManagerCommandTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    void shouldCheckFindingByPaterName() {
+    void shouldCheckFindingByEmail() {
         DefaultUsr expectedUsr = new DefaultUsr(
                 new ObjectId(),
                 Faker.str_().random(),
@@ -62,7 +62,7 @@ class GetUsrByEmailManagerCommandTest {
         AtomicReference<List<Usr>> usrHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
             okHolder.set(result.ok());
-            usrHolder.set((List<Usr>) result.value().get(GetUsrByFirstNameManagerCommand.PROPERTY_USERS).value());
+            usrHolder.set((List<Usr>) result.value().get(GetUsrByEmailManagerCommand.PROPERTY_USERS).value());
         };
 
         Supplier<UsrService> usrServiceSupplier = () -> {

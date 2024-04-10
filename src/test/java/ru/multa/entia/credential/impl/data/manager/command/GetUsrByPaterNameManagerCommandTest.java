@@ -62,7 +62,7 @@ class GetUsrByPaterNameManagerCommandTest {
         AtomicReference<List<Usr>> usrHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
             okHolder.set(result.ok());
-            usrHolder.set((List<Usr>) result.value().get(GetUsrByFirstNameManagerCommand.PROPERTY_USERS).value());
+            usrHolder.set((List<Usr>) result.value().get(GetUsrByPaterNameManagerCommand.PROPERTY_USERS).value());
         };
 
         Supplier<UsrService> usrServiceSupplier = () -> {

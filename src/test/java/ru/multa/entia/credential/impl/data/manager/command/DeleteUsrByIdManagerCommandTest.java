@@ -6,12 +6,10 @@ import org.mockito.Mockito;
 import ru.multa.entia.credential.api.data.manager.item.ManagerDatum;
 import ru.multa.entia.credential.api.data.usr.Usr;
 import ru.multa.entia.credential.api.data.usr.UsrService;
-import ru.multa.entia.credential.impl.data.usr.DefaultUsr;
 import ru.multa.entia.fakers.impl.Faker;
 import ru.multa.entia.results.api.result.Result;
 import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -19,10 +17,10 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GetUsrBySurnameManagerCommandTest {
+class DeleteUsrByIdManagerCommandTest {
 
     @Test
-    void shouldCheckFindingBySurname_ifFail() {
+    void shouldCheckDeleting_ifFail() {
         AtomicBoolean okHolder = new AtomicBoolean(false);
         AtomicReference<String> codeHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
@@ -32,53 +30,40 @@ class GetUsrBySurnameManagerCommandTest {
 
         String expectedCode = Faker.str_().random();
         Supplier<UsrService> usrServiceSupplier = () -> {
-            Result<List<Usr>> result = DefaultResultBuilder.<List<Usr>>fail(expectedCode);
+            Result<Usr> result = DefaultResultBuilder.<Usr>fail(expectedCode);
             UsrService service = Mockito.mock(UsrService.class);
             Mockito
-                    .when(service.getBySurname(Mockito.any()))
+                    .when(service.deleteById(Mockito.any()))
                     .thenReturn(result);
 
             return service;
         };
 
-        new GetUsrBySurnameManagerCommand(consumer, usrServiceSupplier.get(), Faker.str_().random()).execute();
+        new DeleteUsrByIdManagerCommand(consumer, usrServiceSupplier.get(), new ObjectId()).execute();
 
         assertThat(okHolder.get()).isFalse();
         assertThat(codeHolder.get()).isEqualTo(expectedCode);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
-    void shouldCheckFindingBySurname() {
-        DefaultUsr expectedUsr = new DefaultUsr(
-                new ObjectId(),
-                Faker.str_().random(),
-                Faker.str_().random(),
-                Faker.str_().random(),
-                Faker.str_().random()
-        );
-
+    void shouldCheckDeleting() {
         AtomicBoolean okHolder = new AtomicBoolean(false);
-        AtomicReference<List<Usr>> usrHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
             okHolder.set(result.ok());
-            usrHolder.set((List<Usr>) result.value().get(GetUsrBySurnameManagerCommand.PROPERTY_USERS).value());
         };
 
         Supplier<UsrService> usrServiceSupplier = () -> {
-            Result<List<Usr>> result = DefaultResultBuilder.<List<Usr>>ok(List.of(expectedUsr));
+            Result<Usr> result = DefaultResultBuilder.<Usr>ok();
             UsrService service = Mockito.mock(UsrService.class);
             Mockito
-                    .when(service.getBySurname(Mockito.any()))
+                    .when(service.deleteById(Mockito.any()))
                     .thenReturn(result);
 
             return service;
         };
 
-        new GetUsrBySurnameManagerCommand(consumer, usrServiceSupplier.get(), Faker.str_().random()).execute();
+        new DeleteUsrByIdManagerCommand(consumer, usrServiceSupplier.get(), new ObjectId()).execute();
 
         assertThat(okHolder.get()).isTrue();
-        assertThat(usrHolder.get()).hasSize(1);
-        assertThat(usrHolder.get().get(0)).isEqualTo(expectedUsr);
     }
 }
