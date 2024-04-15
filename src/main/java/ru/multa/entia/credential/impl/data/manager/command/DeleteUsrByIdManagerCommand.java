@@ -10,6 +10,7 @@ import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 
 import java.util.function.Consumer;
 
+// TODO: impl service setter
 public class DeleteUsrByIdManagerCommand extends AbstractManagerCommand{
     private final UsrService usrService;
     private final ObjectId id;

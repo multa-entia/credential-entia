@@ -67,7 +67,7 @@ class SaveUsrManagerCommandTest {
         AtomicReference<Usr> usrHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
             okHolder.set(result.ok());
-            usrHolder.set(result.value().get(GetUsrByIdManagerCommand.PROPERTY_USR, DefaultUsr.class).value());
+            usrHolder.set(result.value().get(SaveUsrManagerCommand.PROPERTY_USR, DefaultUsr.class).value());
         };
 
         Supplier<UsrService> usrServiceSupplier = () -> {

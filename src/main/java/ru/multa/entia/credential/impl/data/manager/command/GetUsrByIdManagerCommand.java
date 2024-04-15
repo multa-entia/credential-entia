@@ -10,6 +10,7 @@ import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 
 import java.util.function.Consumer;
 
+// TODO: impl service setter
 public class GetUsrByIdManagerCommand extends AbstractManagerCommand{
     public static final String PROPERTY_USR = "usr";
 
