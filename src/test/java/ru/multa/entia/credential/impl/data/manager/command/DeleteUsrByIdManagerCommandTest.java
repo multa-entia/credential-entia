@@ -7,7 +7,9 @@ import ru.multa.entia.credential.api.data.manager.item.ManagerDatum;
 import ru.multa.entia.credential.api.data.usr.Usr;
 import ru.multa.entia.credential.api.data.usr.UsrService;
 import ru.multa.entia.fakers.impl.Faker;
+import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
+import ru.multa.entia.results.impl.repository.DefaultCodeRepository;
 import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,6 +20,23 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DeleteUsrByIdManagerCommandTest {
+
+    private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
+
+    @Test
+    void shouldCheckCommandExecution_ifServiceIsAbsence() {
+        AtomicBoolean okHolder = new AtomicBoolean(false);
+        AtomicReference<String> codeHolder = new AtomicReference<>();
+        Consumer<Result<ManagerDatum>> consumer = result -> {
+            okHolder.set(result.ok());
+            codeHolder.set(result.seed().code());
+        };
+
+        new DeleteUsrByIdManagerCommand(consumer, new ObjectId()).execute();
+
+        assertThat(okHolder.get()).isFalse();
+        assertThat(codeHolder.get()).isEqualTo(CR.get(DeleteUsrByIdManagerCommand.Code.SERVICE_IS_ABSENCE));
+    }
 
     @Test
     void shouldCheckDeleting_ifFail() {
@@ -39,7 +58,9 @@ class DeleteUsrByIdManagerCommandTest {
             return service;
         };
 
-        new DeleteUsrByIdManagerCommand(consumer, usrServiceSupplier.get(), new ObjectId()).execute();
+        DeleteUsrByIdManagerCommand command = new DeleteUsrByIdManagerCommand(consumer, new ObjectId());
+        command.setUsrService(usrServiceSupplier.get());
+        command.execute();
 
         assertThat(okHolder.get()).isFalse();
         assertThat(codeHolder.get()).isEqualTo(expectedCode);
@@ -62,7 +83,9 @@ class DeleteUsrByIdManagerCommandTest {
             return service;
         };
 
-        new DeleteUsrByIdManagerCommand(consumer, usrServiceSupplier.get(), new ObjectId()).execute();
+        DeleteUsrByIdManagerCommand command = new DeleteUsrByIdManagerCommand(consumer, new ObjectId());
+        command.setUsrService(usrServiceSupplier.get());
+        command.execute();
 
         assertThat(okHolder.get()).isTrue();
     }

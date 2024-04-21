@@ -8,7 +8,9 @@ import ru.multa.entia.credential.api.data.usr.Usr;
 import ru.multa.entia.credential.api.data.usr.UsrService;
 import ru.multa.entia.credential.impl.data.usr.DefaultUsr;
 import ru.multa.entia.fakers.impl.Faker;
+import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
+import ru.multa.entia.results.impl.repository.DefaultCodeRepository;
 import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -19,6 +21,29 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SaveUsrManagerCommandTest {
+    private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
+
+    @Test
+    void shouldCheckCommandExecution_ifServiceIsAbsence() {
+        AtomicBoolean okHolder = new AtomicBoolean(false);
+        AtomicReference<String> codeHolder = new AtomicReference<>();
+        Consumer<Result<ManagerDatum>> consumer = result -> {
+            okHolder.set(result.ok());
+            codeHolder.set(result.seed().code());
+        };
+
+        DefaultUsr usr = new DefaultUsr(
+                new ObjectId(),
+                Faker.str_().random(),
+                Faker.str_().random(),
+                Faker.str_().random(),
+                Faker.str_().random()
+        );
+        new SaveUsrManagerCommand(consumer, usr).execute();
+
+        assertThat(okHolder.get()).isFalse();
+        assertThat(codeHolder.get()).isEqualTo(CR.get(SaveUsrManagerCommand.Code.SERVICE_IS_ABSENCE));
+    }
 
     @Test
     void shouldCheckFailSaving() {
@@ -47,7 +72,9 @@ class SaveUsrManagerCommandTest {
                 Faker.str_().random(),
                 Faker.str_().random()
         );
-        new SaveUsrManagerCommand(consumer, usrServiceSupplier.get(), usr).execute();
+        SaveUsrManagerCommand command = new SaveUsrManagerCommand(consumer, usr);
+        command.setUsrService(usrServiceSupplier.get());
+        command.execute();
 
         assertThat(okHolder.get()).isFalse();
         assertThat(codeHolder.get()).isEqualTo(expectedCode);
@@ -80,7 +107,9 @@ class SaveUsrManagerCommandTest {
             return service;
         };
 
-        new SaveUsrManagerCommand(consumer, usrServiceSupplier.get(), expectedUsr).execute();
+        SaveUsrManagerCommand command = new SaveUsrManagerCommand(consumer, expectedUsr);
+        command.setUsrService(usrServiceSupplier.get());
+        command.execute();
 
         assertThat(okHolder.get()).isTrue();
         assertThat(usrHolder.get()).isEqualTo(expectedUsr);

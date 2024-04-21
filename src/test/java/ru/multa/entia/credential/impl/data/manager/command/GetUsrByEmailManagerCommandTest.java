@@ -8,7 +8,9 @@ import ru.multa.entia.credential.api.data.usr.Usr;
 import ru.multa.entia.credential.api.data.usr.UsrService;
 import ru.multa.entia.credential.impl.data.usr.DefaultUsr;
 import ru.multa.entia.fakers.impl.Faker;
+import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
+import ru.multa.entia.results.impl.repository.DefaultCodeRepository;
 import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 
 import java.util.List;
@@ -20,6 +22,22 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GetUsrByEmailManagerCommandTest {
+    private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
+
+    @Test
+    void shouldCheckCommandExecution_ifServiceIsAbsence() {
+        AtomicBoolean okHolder = new AtomicBoolean(false);
+        AtomicReference<String> codeHolder = new AtomicReference<>();
+        Consumer<Result<ManagerDatum>> consumer = result -> {
+            okHolder.set(result.ok());
+            codeHolder.set(result.seed().code());
+        };
+
+        new GetUsrByEmailManagerCommand(consumer, Faker.str_().random()).execute();
+
+        assertThat(okHolder.get()).isFalse();
+        assertThat(codeHolder.get()).isEqualTo(CR.get(GetUsrByEmailManagerCommand.Code.SERVICE_IS_ABSENCE));
+    }
 
     @Test
     void shouldCheckFindingByEmail_ifFail() {
@@ -41,7 +59,9 @@ class GetUsrByEmailManagerCommandTest {
             return service;
         };
 
-        new GetUsrByEmailManagerCommand(consumer, usrServiceSupplier.get(), Faker.str_().random()).execute();
+        GetUsrByEmailManagerCommand command = new GetUsrByEmailManagerCommand(consumer, Faker.str_().random());
+        command.setUsrService(usrServiceSupplier.get());
+        command.execute();
 
         assertThat(okHolder.get()).isFalse();
         assertThat(codeHolder.get()).isEqualTo(expectedCode);
@@ -75,7 +95,9 @@ class GetUsrByEmailManagerCommandTest {
             return service;
         };
 
-        new GetUsrByEmailManagerCommand(consumer, usrServiceSupplier.get(), Faker.str_().random()).execute();
+        GetUsrByEmailManagerCommand command = new GetUsrByEmailManagerCommand(consumer, Faker.str_().random());
+        command.setUsrService(usrServiceSupplier.get());
+        command.execute();
 
         assertThat(okHolder.get()).isTrue();
         assertThat(usrHolder.get()).hasSize(1);
