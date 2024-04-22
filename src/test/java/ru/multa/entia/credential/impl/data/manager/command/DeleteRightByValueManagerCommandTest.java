@@ -46,7 +46,7 @@ class DeleteRightByValueManagerCommandTest {
         };
 
         String expectedCode = Faker.str_().random();
-        Supplier<RightService> usrServiceSupplier = () -> {
+        Supplier<RightService> rightServiceSupplier = () -> {
             Result<Right> result = DefaultResultBuilder.<Right>fail(expectedCode);
             RightService service = Mockito.mock(RightService.class);
             Mockito
@@ -57,7 +57,7 @@ class DeleteRightByValueManagerCommandTest {
         };
 
         DeleteRightByValueManagerCommand command = new DeleteRightByValueManagerCommand(consumer, Faker.str_().random());
-        command.setRightService(usrServiceSupplier.get());
+        command.setRightService(rightServiceSupplier.get());
         command.execute();
 
         assertThat(okHolder.get()).isFalse();
@@ -71,7 +71,7 @@ class DeleteRightByValueManagerCommandTest {
             okHolder.set(result.ok());
         };
 
-        Supplier<RightService> usrServiceSupplier = () -> {
+        Supplier<RightService> rightServiceSupplier = () -> {
             Result<Right> result = DefaultResultBuilder.<Right>ok();
             RightService service = Mockito.mock(RightService.class);
             Mockito
@@ -82,7 +82,7 @@ class DeleteRightByValueManagerCommandTest {
         };
 
         DeleteRightByValueManagerCommand command = new DeleteRightByValueManagerCommand(consumer, Faker.str_().random());
-        command.setRightService(usrServiceSupplier.get());
+        command.setRightService(rightServiceSupplier.get());
         command.execute();
 
         assertThat(okHolder.get()).isTrue();

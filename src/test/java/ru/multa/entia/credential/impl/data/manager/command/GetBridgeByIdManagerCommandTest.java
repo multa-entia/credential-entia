@@ -3,10 +3,10 @@ package ru.multa.entia.credential.impl.data.manager.command;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import ru.multa.entia.credential.api.data.bridge.Bridge;
+import ru.multa.entia.credential.api.data.bridge.BridgeService;
 import ru.multa.entia.credential.api.data.manager.item.ManagerDatum;
-import ru.multa.entia.credential.api.data.right.Right;
-import ru.multa.entia.credential.api.data.right.RightService;
-import ru.multa.entia.credential.impl.data.right.DefaultRight;
+import ru.multa.entia.credential.impl.data.bridge.DefaultBridge;
 import ru.multa.entia.fakers.impl.Faker;
 import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
@@ -20,8 +20,7 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SaveRightManagerCommandTest {
-
+class GetBridgeByIdManagerCommandTest {
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
 
     @Test
@@ -33,10 +32,10 @@ class SaveRightManagerCommandTest {
             codeHolder.set(result.seed().code());
         };
 
-        new SaveRightManagerCommand(consumer, new DefaultRight(new ObjectId(), Faker.str_().random())).execute();
+        new GetBridgeByIdManagerCommand(consumer, new ObjectId()).execute();
 
         assertThat(okHolder.get()).isFalse();
-        assertThat(codeHolder.get()).isEqualTo(CR.get(SaveRightManagerCommand.Code.SERVICE_IS_ABSENCE));
+        assertThat(codeHolder.get()).isEqualTo(CR.get(GetBridgeByIdManagerCommand.Code.SERVICE_IS_ABSENCE));
     }
 
     @Test
@@ -49,18 +48,18 @@ class SaveRightManagerCommandTest {
         };
 
         String expectedCode = Faker.str_().random();
-        Supplier<RightService> rightServiceSupplier = () -> {
-            Result<Right> result = DefaultResultBuilder.<Right>fail(expectedCode);
-            RightService service = Mockito.mock(RightService.class);
+        Supplier<BridgeService> bridgeServiceSupplier = () -> {
+            Result<Bridge> result = DefaultResultBuilder.<Bridge>fail(expectedCode);
+            BridgeService service = Mockito.mock(BridgeService.class);
             Mockito
-                    .when(service.save(Mockito.any()))
+                    .when(service.getById(Mockito.any()))
                     .thenReturn(result);
 
             return service;
         };
 
-        SaveRightManagerCommand command = new SaveRightManagerCommand(consumer, new DefaultRight(new ObjectId(), Faker.str_().random()));
-        command.setRightService(rightServiceSupplier.get());
+        GetBridgeByIdManagerCommand command = new GetBridgeByIdManagerCommand(consumer, new ObjectId());
+        command.setBridgeService(bridgeServiceSupplier.get());
         command.execute();
 
         assertThat(okHolder.get()).isFalse();
@@ -69,30 +68,30 @@ class SaveRightManagerCommandTest {
 
     @Test
     void shouldCheckCommandExecution() {
-        DefaultRight expectedRight = new DefaultRight(new ObjectId(), Faker.str_().random());
+        DefaultBridge expectedBridge = new DefaultBridge(new ObjectId(), new ObjectId(), new ObjectId());
 
         AtomicBoolean okHolder = new AtomicBoolean(false);
-        AtomicReference<Right> codeHolder = new AtomicReference<>();
+        AtomicReference<Bridge> codeHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
             okHolder.set(result.ok());
-            codeHolder.set(result.value().get(SaveRightManagerCommand.PROPERTY_RIGHT, DefaultRight.class).value());
+            codeHolder.set(result.value().get(GetBridgeByIdManagerCommand.PROPERTY_BRIDGE, DefaultBridge.class).value());
         };
 
-        Supplier<RightService> rightServiceSupplier = () -> {
-            Result<Right> result = DefaultResultBuilder.<Right>ok(expectedRight);
-            RightService service = Mockito.mock(RightService.class);
+        Supplier<BridgeService> bridgeServiceSupplier = () -> {
+            Result<Bridge> result = DefaultResultBuilder.<Bridge>ok(expectedBridge);
+            BridgeService service = Mockito.mock(BridgeService.class);
             Mockito
-                    .when(service.save(Mockito.any()))
+                    .when(service.getById(Mockito.any()))
                     .thenReturn(result);
 
             return service;
         };
 
-        SaveRightManagerCommand command = new SaveRightManagerCommand(consumer, new DefaultRight(new ObjectId(), Faker.str_().random()));
-        command.setRightService(rightServiceSupplier.get());
+        GetBridgeByIdManagerCommand command = new GetBridgeByIdManagerCommand(consumer, new ObjectId());
+        command.setBridgeService(bridgeServiceSupplier.get());
         command.execute();
 
         assertThat(okHolder.get()).isTrue();
-        assertThat(codeHolder.get()).isEqualTo(expectedRight);
+        assertThat(codeHolder.get()).isEqualTo(expectedBridge);
     }
 }

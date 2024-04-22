@@ -47,7 +47,7 @@ class DeleteRightByIdManagerCommandTest {
         };
 
         String expectedCode = Faker.str_().random();
-        Supplier<RightService> usrServiceSupplier = () -> {
+        Supplier<RightService> rightServiceSupplier = () -> {
             Result<Right> result = DefaultResultBuilder.<Right>fail(expectedCode);
             RightService service = Mockito.mock(RightService.class);
             Mockito
@@ -58,7 +58,7 @@ class DeleteRightByIdManagerCommandTest {
         };
 
         DeleteRightByIdManagerCommand command = new DeleteRightByIdManagerCommand(consumer, new ObjectId());
-        command.setRightService(usrServiceSupplier.get());
+        command.setRightService(rightServiceSupplier.get());
         command.execute();
 
         assertThat(okHolder.get()).isFalse();
@@ -72,7 +72,7 @@ class DeleteRightByIdManagerCommandTest {
             okHolder.set(result.ok());
         };
 
-        Supplier<RightService> usrServiceSupplier = () -> {
+        Supplier<RightService> rightServiceSupplier = () -> {
             Result<Right> result = DefaultResultBuilder.<Right>ok();
             RightService service = Mockito.mock(RightService.class);
             Mockito
@@ -83,7 +83,7 @@ class DeleteRightByIdManagerCommandTest {
         };
 
         DeleteRightByIdManagerCommand command = new DeleteRightByIdManagerCommand(consumer, new ObjectId());
-        command.setRightService(usrServiceSupplier.get());
+        command.setRightService(rightServiceSupplier.get());
         command.execute();
 
         assertThat(okHolder.get()).isTrue();
