@@ -4,7 +4,6 @@ public interface ManagerCommand {
     void execute();
     // TODO: !!!
     /*
-    Result<Right> deleteById(ObjectId id);
     Result<Right> deleteByValue(String value);
      */
     /*
