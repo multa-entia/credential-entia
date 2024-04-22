@@ -1,7 +1,6 @@
 package ru.multa.entia.credential.impl.data.manager.command;
 
 import lombok.Setter;
-import org.bson.types.ObjectId;
 import ru.multa.entia.credential.api.data.manager.item.ManagerDatum;
 import ru.multa.entia.credential.api.data.right.Right;
 import ru.multa.entia.credential.api.data.right.RightService;
@@ -13,27 +12,25 @@ import ru.multa.entia.results.impl.result.DefaultResultBuilder;
 
 import java.util.function.Consumer;
 
-public class GetRightByIdMangerCommand extends AbstractManagerCommand {
-    public static final String PROPERTY_RIGHT = "right";
-
+public class DeleteRightByValueManagerCommand extends AbstractManagerCommand {
     public enum Code {
         SERVICE_IS_ABSENCE
     }
 
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
     static {
-        CR.update(Code.SERVICE_IS_ABSENCE, "credential:command.get-right-by-id:service-is-absence");
+        CR.update(Code.SERVICE_IS_ABSENCE, "credential:command.delete-right-by-value:service-is-absence");
     }
 
-    private final ObjectId id;
+    private final String value;
 
     @Setter
     private RightService rightService;
 
-    public GetRightByIdMangerCommand(final Consumer<Result<ManagerDatum>> consumer,
-                                     final ObjectId id) {
+    public DeleteRightByValueManagerCommand(final Consumer<Result<ManagerDatum>> consumer,
+                                            final String value) {
         super(consumer);
-        this.id = id;
+        this.value = value;
     }
 
     @Override
@@ -42,9 +39,9 @@ public class GetRightByIdMangerCommand extends AbstractManagerCommand {
             return DefaultResultBuilder.<ManagerDatum>fail(CR.get(Code.SERVICE_IS_ABSENCE));
         }
 
-        Result<Right> result = rightService.getById(id);
+        Result<Right> result = rightService.deleteByValue(value);
         return result.ok()
-                ? DefaultResultBuilder.<ManagerDatum>ok(DefaultManagerDatum.builder().property(PROPERTY_RIGHT, result.value()).build())
+                ? DefaultResultBuilder.<ManagerDatum>ok(DefaultManagerDatum.builder().build())
                 : DefaultResultBuilder.<ManagerDatum>fail(result.seed());
     }
 }

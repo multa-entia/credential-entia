@@ -1,12 +1,10 @@
 package ru.multa.entia.credential.impl.data.manager.command;
 
-import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.multa.entia.credential.api.data.manager.item.ManagerDatum;
 import ru.multa.entia.credential.api.data.right.Right;
 import ru.multa.entia.credential.api.data.right.RightService;
-import ru.multa.entia.credential.impl.data.right.DefaultRight;
 import ru.multa.entia.fakers.impl.Faker;
 import ru.multa.entia.results.api.repository.CodeRepository;
 import ru.multa.entia.results.api.result.Result;
@@ -20,8 +18,7 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SaveRightManagerCommandTest {
-
+class DeleteRightByValueManagerCommandTest {
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
 
     @Test
@@ -33,14 +30,14 @@ class SaveRightManagerCommandTest {
             codeHolder.set(result.seed().code());
         };
 
-        new SaveRightManagerCommand(consumer, new DefaultRight(new ObjectId(), Faker.str_().random())).execute();
+        new DeleteRightByValueManagerCommand(consumer, Faker.str_().random()).execute();
 
         assertThat(okHolder.get()).isFalse();
-        assertThat(codeHolder.get()).isEqualTo(CR.get(SaveRightManagerCommand.Code.SERVICE_IS_ABSENCE));
+        assertThat(codeHolder.get()).isEqualTo(CR.get(DeleteRightByValueManagerCommand.Code.SERVICE_IS_ABSENCE));
     }
 
     @Test
-    void shouldCheckCommandExecution_ifEntityIsAbsence() {
+    void shouldCheckDeleting_ifFail() {
         AtomicBoolean okHolder = new AtomicBoolean(false);
         AtomicReference<String> codeHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
@@ -49,18 +46,18 @@ class SaveRightManagerCommandTest {
         };
 
         String expectedCode = Faker.str_().random();
-        Supplier<RightService> rightServiceSupplier = () -> {
+        Supplier<RightService> usrServiceSupplier = () -> {
             Result<Right> result = DefaultResultBuilder.<Right>fail(expectedCode);
             RightService service = Mockito.mock(RightService.class);
             Mockito
-                    .when(service.save(Mockito.any()))
+                    .when(service.deleteByValue(Mockito.any()))
                     .thenReturn(result);
 
             return service;
         };
 
-        SaveRightManagerCommand command = new SaveRightManagerCommand(consumer, new DefaultRight(new ObjectId(), Faker.str_().random()));
-        command.setRightService(rightServiceSupplier.get());
+        DeleteRightByValueManagerCommand command = new DeleteRightByValueManagerCommand(consumer, Faker.str_().random());
+        command.setRightService(usrServiceSupplier.get());
         command.execute();
 
         assertThat(okHolder.get()).isFalse();
@@ -68,31 +65,26 @@ class SaveRightManagerCommandTest {
     }
 
     @Test
-    void shouldCheckCommandExecution() {
-        DefaultRight expectedRight = new DefaultRight(new ObjectId(), Faker.str_().random());
-
+    void shouldCheckDeleting() {
         AtomicBoolean okHolder = new AtomicBoolean(false);
-        AtomicReference<Right> codeHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
             okHolder.set(result.ok());
-            codeHolder.set(result.value().get(GetRightByIdManagerCommand.PROPERTY_RIGHT, DefaultRight.class).value());
         };
 
-        Supplier<RightService> rightServiceSupplier = () -> {
-            Result<Right> result = DefaultResultBuilder.<Right>ok(expectedRight);
+        Supplier<RightService> usrServiceSupplier = () -> {
+            Result<Right> result = DefaultResultBuilder.<Right>ok();
             RightService service = Mockito.mock(RightService.class);
             Mockito
-                    .when(service.save(Mockito.any()))
+                    .when(service.deleteByValue(Mockito.any()))
                     .thenReturn(result);
 
             return service;
         };
 
-        SaveRightManagerCommand command = new SaveRightManagerCommand(consumer, new DefaultRight(new ObjectId(), Faker.str_().random()));
-        command.setRightService(rightServiceSupplier.get());
+        DeleteRightByValueManagerCommand command = new DeleteRightByValueManagerCommand(consumer, Faker.str_().random());
+        command.setRightService(usrServiceSupplier.get());
         command.execute();
 
         assertThat(okHolder.get()).isTrue();
-        assertThat(codeHolder.get()).isEqualTo(expectedRight);
     }
 }

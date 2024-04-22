@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GetRightByIdMangerCommandTest {
+class GetRightByIdManagerCommandTest {
     private static final CodeRepository CR = DefaultCodeRepository.getDefaultInstance();
 
     @Test
@@ -32,10 +32,10 @@ class GetRightByIdMangerCommandTest {
             codeHolder.set(result.seed().code());
         };
 
-        new GetRightByIdMangerCommand(consumer, new ObjectId()).execute();
+        new GetRightByIdManagerCommand(consumer, new ObjectId()).execute();
 
         assertThat(okHolder.get()).isFalse();
-        assertThat(codeHolder.get()).isEqualTo(CR.get(GetRightByIdMangerCommand.Code.SERVICE_IS_ABSENCE));
+        assertThat(codeHolder.get()).isEqualTo(CR.get(GetRightByIdManagerCommand.Code.SERVICE_IS_ABSENCE));
     }
 
     @Test
@@ -58,7 +58,7 @@ class GetRightByIdMangerCommandTest {
             return service;
         };
 
-        GetRightByIdMangerCommand command = new GetRightByIdMangerCommand(consumer, new ObjectId());
+        GetRightByIdManagerCommand command = new GetRightByIdManagerCommand(consumer, new ObjectId());
         command.setRightService(rightServiceSupplier.get());
         command.execute();
 
@@ -74,7 +74,7 @@ class GetRightByIdMangerCommandTest {
         AtomicReference<Right> codeHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
             okHolder.set(result.ok());
-            codeHolder.set(result.value().get(GetRightByIdMangerCommand.PROPERTY_RIGHT, DefaultRight.class).value());
+            codeHolder.set(result.value().get(GetRightByIdManagerCommand.PROPERTY_RIGHT, DefaultRight.class).value());
         };
 
         Supplier<RightService> rightServiceSupplier = () -> {
@@ -87,7 +87,7 @@ class GetRightByIdMangerCommandTest {
             return service;
         };
 
-        GetRightByIdMangerCommand command = new GetRightByIdMangerCommand(consumer, new ObjectId());
+        GetRightByIdManagerCommand command = new GetRightByIdManagerCommand(consumer, new ObjectId());
         command.setRightService(rightServiceSupplier.get());
         command.execute();
 

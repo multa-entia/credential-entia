@@ -74,7 +74,7 @@ class GetRightByValueManagerCommandTest {
         AtomicReference<Right> codeHolder = new AtomicReference<>();
         Consumer<Result<ManagerDatum>> consumer = result -> {
             okHolder.set(result.ok());
-            codeHolder.set(result.value().get(GetRightByIdMangerCommand.PROPERTY_RIGHT, DefaultRight.class).value());
+            codeHolder.set(result.value().get(GetRightByIdManagerCommand.PROPERTY_RIGHT, DefaultRight.class).value());
         };
 
         Supplier<RightService> rightServiceSupplier = () -> {

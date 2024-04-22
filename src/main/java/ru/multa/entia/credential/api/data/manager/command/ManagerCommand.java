@@ -4,9 +4,6 @@ public interface ManagerCommand {
     void execute();
     // TODO: !!!
     /*
-    Result<Right> deleteByValue(String value);
-     */
-    /*
     Result<Bridge> getById(ObjectId id);
     Result<Bridge> save(Bridge bridge);
     Result<List<Bridge>> getByUserId(ObjectId userId);
