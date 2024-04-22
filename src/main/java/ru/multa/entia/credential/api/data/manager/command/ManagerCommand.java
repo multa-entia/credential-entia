@@ -5,7 +5,6 @@ public interface ManagerCommand {
     // TODO: !!!
     /*
 
-    Result<Bridge> save(Bridge bridge);
     Result<List<Bridge>> getByUserId(ObjectId userId);
     Result<List<Bridge>> getByRightId(ObjectId rightId);
     Result<List<Bridge>> getByUserAndRightIds(ObjectId userId, ObjectId rightId);
