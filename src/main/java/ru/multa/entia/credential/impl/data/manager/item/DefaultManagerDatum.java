@@ -50,7 +50,6 @@ public class DefaultManagerDatum implements ManagerDatum {
         );
     }
 
-    // TODO: refact + test
     @Override
     public Result<Object> get(final String property) {
         return data.containsKey(property)

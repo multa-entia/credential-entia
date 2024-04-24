@@ -143,4 +143,63 @@ class DefaultManagerDatumTest {
                 .compare()
         ).isTrue();
     }
+
+    void shouldCheckGettingWithoutType_ifAbsence() {
+        Result<Object> result = DefaultManagerDatum.builder().build().get(Faker.str_().random());
+
+        assertThat(Results.comparator(result)
+                .isFail()
+                .value(null)
+                .seedsComparator()
+                .code(CR.get(DefaultManagerDatum.Code.PROPERTY_IS_ABSENCE))
+                .back()
+                .compare()
+        ).isTrue();
+    }
+
+    @Test
+    void shouldCheckGettingWithoutType() {
+        String expectedStringKey = Faker.str_().random();
+        String expectedStringValue = Faker.str_().random();
+        String expectedIntegerKey = Faker.str_().random();
+        Integer expectedIntegerValue = Faker.int_().random();
+        String expectedObjectIdKey = Faker.str_().random();
+        ObjectId expectedObjectIdValue = new ObjectId();
+
+        DefaultManagerDatum item = DefaultManagerDatum.builder()
+                .property(expectedStringKey, expectedStringValue)
+                .property(expectedIntegerKey, expectedIntegerValue)
+                .property(expectedObjectIdKey, expectedObjectIdValue)
+                .build();
+
+        Result<Object> sResult = item.get(expectedStringKey);
+        assertThat(Results.comparator(sResult)
+                .isSuccess()
+                .value(expectedStringValue)
+                .seedsComparator()
+                .isNull()
+                .back()
+                .compare()
+        ).isTrue();
+
+        Result<Object> iResult = item.get(expectedIntegerKey);
+        assertThat(Results.comparator(iResult)
+                .isSuccess()
+                .value(expectedIntegerValue)
+                .seedsComparator()
+                .isNull()
+                .back()
+                .compare()
+        ).isTrue();
+
+        Result<Object> oiResult = item.get(expectedObjectIdKey);
+        assertThat(Results.comparator(oiResult)
+                .isSuccess()
+                .value(expectedObjectIdValue)
+                .seedsComparator()
+                .isNull()
+                .back()
+                .compare()
+        ).isTrue();
+    }
 }
