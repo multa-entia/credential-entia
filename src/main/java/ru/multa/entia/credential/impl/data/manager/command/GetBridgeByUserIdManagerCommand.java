@@ -26,15 +26,15 @@ public class GetBridgeByUserIdManagerCommand extends AbstractManagerCommand{
         CR.update(Code.SERVICE_IS_ABSENCE, "credential:command.get-bridge-by-user-id:service-is-absence");
     }
 
-    private final ObjectId objectId;
+    private final ObjectId userId;
 
     @Setter
     private BridgeService bridgeService;
 
     public GetBridgeByUserIdManagerCommand(final Consumer<Result<ManagerDatum>> consumer,
-                                           final ObjectId objectId) {
+                                           final ObjectId userId) {
         super(consumer);
-        this.objectId = objectId;
+        this.userId = userId;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class GetBridgeByUserIdManagerCommand extends AbstractManagerCommand{
             return DefaultResultBuilder.<ManagerDatum>fail(CR.get(Code.SERVICE_IS_ABSENCE));
         }
 
-        Result<List<Bridge>> result = bridgeService.getByUserId(objectId);
+        Result<List<Bridge>> result = bridgeService.getByUserId(userId);
         return result.ok()
                 ? DefaultResultBuilder.<ManagerDatum>ok(DefaultManagerDatum.builder().property(PROPERTY_BRIDGES, result.value()).build())
                 : DefaultResultBuilder.<ManagerDatum>fail(result.seed());
