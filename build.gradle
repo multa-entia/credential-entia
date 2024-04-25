@@ -29,6 +29,7 @@ ext {
 	set('javaFakersVersion', '0.2')
 	set('javaResultsVersion', '0.7.1')
 	set('javaParameters', '0.2')
+	set('javaConversation', '0.1.1')
 }
 
 dependencies {
@@ -36,6 +37,7 @@ dependencies {
 	implementation "org.projectlombok:lombok:$lombokVersion"
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.kafka:spring-kafka'
 
 	// anno section
 	annotationProcessor "org.projectlombok:lombok:$lombokVersion"
@@ -43,6 +45,7 @@ dependencies {
 	// test-impl section
 	testImplementation "org.projectlombok:lombok:$lombokVersion"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
 	// test-anno section
 	testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
@@ -50,11 +53,13 @@ dependencies {
 	// local impl section
 	implementation "ru.multa.entia:java-results:$javaResultsVersion"
 	implementation "ru.multa.entia:java-parameters:$javaParameters"
+	implementation "ru.multa.entia:java-conversation:$javaConversation"
 
 	// local test-impl section
 	testImplementation "ru.multa.entia:java-fakers:$javaFakersVersion"
 	testImplementation "ru.multa.entia:java-results:$javaResultsVersion"
 	testImplementation "ru.multa.entia:java-parameters:$javaParameters"
+	testImplementation "ru.multa.entia:java-conversation:$javaConversation"
 }
 
 tasks.named('test') {
